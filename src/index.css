@@ -17,3 +17,93 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.navbar{
+  border-bottom: solid 2px #E30013;
+  position: fixed;
+  width: 100%;
+  top: 0;
+}
+
+#logo{
+  margin-right: 10px;
+}
+
+#navbarNav{
+  padding-top: 0.25%;
+}
+
+#user{
+  padding-top: 0.25%;
+}
+
+#usericon{
+  width: 17px;
+  height: auto;
+
+}
+
+#anchor{
+  width: 90%;
+  height: 100vh; /*muss später auf auto gestellt werden*/
+  /* background-color: #ffffff; */
+  margin: 0 auto;
+  margin-top: 60px;
+  margin-bottom: 30px; /*Kann bei Footer entfernt werden*/
+  /* border-radius: 3.5px; */
+
+}
+
+.content{
+ background-color: #ffffff;
+ border-radius: 3.5px;
+ text-align: justify;
+ margin-top: 40px;
+ 
+ padding: 7px;
+ padding-left: 10px;
+ padding-right: 10px;
+ padding-bottom: 18px;
+ -webkit-box-shadow: 10px 10px 12px -7px rgba(51,51,51,1);
+ -moz-box-shadow: 10px 10px 12px -7px rgba(51,51,51,1);
+ box-shadow: 10px 10px 12px -7px rgba(51,51,51,1);
+
+}
+
+.display-4{
+  font-size: 24px;
+  text-align: center;
+}
+
+a{
+  color: black;
+}
+
+a:hover{
+  text-decoration: none;
+  color: #E30013;
+}
+
+#ghost{
+  visibility: hidden;
+  height: 20px;
+}
+
+@media (max-width: 991px) {
+  #user{
+      margin-right: 15%;
+  }
+}
+
+@media (max-width: 600px) {
+  #stuggi{
+      display: none;
+  }
+  #anchor{
+      margin-top: 50px;
+      margin-bottom: 30px; /*Kann bei Footer entfernt werden*/
+      border-radius: 3.5px;
+  
+  }
+}

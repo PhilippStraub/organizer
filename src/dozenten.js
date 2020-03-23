@@ -1,63 +1,27 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Template from './home';
-import './home.css';
+import './dozenten.css';
 
-// ReactDOM.render(<Template />, document.getElementById('root'));
-// ReactDOM.render(<NavItemsDozenten />, document.getElementById('navbarNav'));
-// ReactDOM.render(<ContentDozenten />, document.getElementById('anchor'));
 
-class NavItemsDozenten extends React.Component{
-    render() {
-        return(
-            <ul className="navbar-nav">
-                <li className="nav-item">
-                    <a className="nav-link" href="#">Home</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#">Kurse</a>
-                </li>
-                <li className="nav-item active">
-                    <a className="nav-link" href="#">Dozenten</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#">Vorlesungen</a>
-                </li>
-            </ul>
-        )
-    }
-}
-
-class ContentSmallDozenten extends React.Component{    
+class Dozenten extends React.Component{
+    //Later there will be a .js for each header in menu like Dozenten, Termine, etc.
+    //These .js Files will have two different main components: One full and one shorter view
+    //the export default will always be the shorter version
+    //that way we're able to include them here in our home view but also seperate them.
     render() {
         return(
             <div>
-
-            </div>
-            
-        );
-        
-      }
-}
-
-class ContentDozenten extends React.Component{    
-    render() {
-        return(
-            <div>
-                <div className="content">
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                                
+                <div className="content" id="">
+                    
+                          
                 </div>
-                <div className="content">
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                               
-                </div>
+                
             </div>
+
         );
         
       }
 
 }
 
-export {ContentSmallDozenten, ContentDozenten, NavItemsDozenten};
+
+export default Dozenten;
