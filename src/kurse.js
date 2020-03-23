@@ -12,7 +12,7 @@ class Kurse extends React.Component{
         return(
             <div>
                 <div id="add">
-                    <form onSubmit={this.handleSubmit} id="kurse">
+                    <form onSubmit={this.handleSubmit} id="kurs">
                         <div className="inputfields">
                             <div className="form-row">
                                 <div className="input-group">
@@ -27,7 +27,7 @@ class Kurse extends React.Component{
                         </div>
                     </form>
 
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit} id="semester">
                         <div className="inputfields">
                             <div className="form-row">
                                 <div className="input-group">
@@ -43,7 +43,19 @@ class Kurse extends React.Component{
                     </form>
                 </div>
                 
-                <div className="content">
+                <div className="content" id="search">
+                    <h1 className="display-4">Termine</h1>
+                    <hr></hr>
+                    <form>
+                        <div className="row">
+                            <div className="col">
+                                <input type="text" className="form-control" placeholder="First name" />
+                            </div>
+                            <div className="col">
+                            <   input type="text" className="form-control" placeholder="Last name" />
+                            </div>
+                        </div>
+                    </form>
                    
                           
                 </div>
