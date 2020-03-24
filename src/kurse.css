@@ -62,6 +62,19 @@
     padding-left: 0;
 }
 
+@media (min-width: 1300px){
+    #inputKurs{
+        width: 50%;
+        float: right;
+    }
+    
+    #inputSemester{
+        width: 50%;
+        float: left;
+    }
+}
+
+
 @media (max-width: 600px) {
     #kurs{
         width: 100%;
@@ -80,5 +93,6 @@
     #search{
         margin-top: 0;
     }
+
     
   }

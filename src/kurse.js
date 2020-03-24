@@ -49,10 +49,10 @@ class Kurse extends React.Component{
                     <form>
                         <div className="row">
                             <div className="col" id="searchKurs">
-                                <input type="text" className="form-control" name="kurs" placeholder="Kurs" />
+                                <input type="text" className="form-control" name="kurs" placeholder="Kurs" id="inputKurs" />
                             </div>
                             <div className="col" id="searchSemester">
-                            <   input type="text" className="form-control" name="semester" placeholder="Semester" />
+                            <   input type="text" className="form-control" name="semester" placeholder="Semester" id="inputSemester" />
                             </div>
                         </div>
                     </form>
