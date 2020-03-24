@@ -7,7 +7,29 @@ class Kurse extends React.Component{
     //These .js Files will have two different main components: One full and one shorter view
     //the export default will always be the shorter version
     //that way we're able to include them here in our home view but also seperate them.
+constructor() {
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
+    }
 
+    handleSubmit(event) {
+        alert("PEnis");
+    event.preventDefault();
+    const data = new FormData(event.target);
+    
+    fetch('/api/form-submit-url', {
+        method: 'POST',
+        body: data,
+    }).then((res) => {
+        if(res.ok){
+        //return response.json();
+        }else{
+        
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
+}
     render() {
         return(
             <div>
@@ -17,7 +39,7 @@ class Kurse extends React.Component{
                             <div className="form-row">
                                 <div className="input-group" id="inp-g">
                                     <div className="input-group-prepend" id="inp">
-                                    <span className="input-group-text" id="inputGroupPrepend2">
+                                    <span className="input-group-text" id="inputGroupPrepend2" onClick={this.handleSubmit}>
                                         +
                                     </span>
                                     </div>
@@ -32,7 +54,7 @@ class Kurse extends React.Component{
                             <div className="form-row">
                                 <div className="input-group" id="inp-g">
                                     <div className="input-group-prepend" id="inp">
-                                    <span className="input-group-text" id="inputGroupPrepend2">
+                                    <span className="input-group-text" id="inputGroupPrepend2" onClick={this.handleSubmit}>
                                         +
                                     </span>
                                     </div>

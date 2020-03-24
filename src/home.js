@@ -1,5 +1,6 @@
 import React from 'react';
 import './home.css';
+import Kurse from './kurse';
 
 
 class Home extends React.Component{
@@ -10,6 +11,7 @@ class Home extends React.Component{
     render() {
         return(
             <div>
+                <Kurse />
                 <div className="content" id="dozenten">
                     <a href="#">
                         <h1 className="display-4">Dozenten</h1>
