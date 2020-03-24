@@ -24,9 +24,6 @@ class NavItemsHome extends React.Component{
                 <li className="nav-item">
                     <Link to={'/dozenten'} className="nav-link">Dozenten</Link>
                 </li>
-                <li className="nav-item">
-                    <Link to={'/vorlesungen'} className="nav-link">Vorlesungen</Link>
-                </li>
             </ul>            
         )
     }
@@ -45,9 +42,6 @@ class NavItemsKurse extends React.Component{
                 <li className="nav-item">
                     <Link to={'/dozenten'} className="nav-link">Dozenten</Link>
                 </li>
-                <li className="nav-item">
-                    <Link to={'/vorlesungen'} className="nav-link">Vorlesungen</Link>
-                </li>
             </ul>            
         )
     }
@@ -65,30 +59,6 @@ class NavItemsDozenten extends React.Component{
                 </li>
                 <li className="nav-item active">
                     <Link to={'/dozenten'} className="nav-link">Dozenten</Link>
-                </li>
-                <li className="nav-item">
-                    <Link to={'/vorlesungen'} className="nav-link">Vorlesungen</Link>
-                </li>
-            </ul>            
-        )
-    }
-}
-
-class NavItemsVorlesungen extends React.Component{
-    render() {
-        return(
-            <ul className="navbar-nav">
-                <li className="nav-item">
-                    <Link to={'/'} className="nav-link">Home</Link>
-                </li>
-                <li className="nav-item">
-                    <Link to={'/kurse'} className="nav-link">Kurse</Link>
-                </li>
-                <li className="nav-item">
-                    <Link to={'/dozenten'} className="nav-link">Dozenten</Link>
-                </li>
-                <li className="nav-item active">
-                    <Link to={'/vorlesungen'} className="nav-link">Vorlesungen</Link>
                 </li>
             </ul>            
         )
@@ -117,7 +87,6 @@ class Template extends React.Component{
                                     <Route exact path='/' component={NavItemsHome} />
                                     <Route exact path='/kurse' component={NavItemsKurse} />
                                     <Route exact path='/dozenten' component={NavItemsDozenten} />
-                                    <Route exact path='/vorlesungen' component={NavItemsVorlesungen} />
                                 </Switch> 
                             </div>
                             <div id="user">
@@ -161,7 +130,6 @@ class Index extends React.Component{
                         <Route exact path='/' component={Template} />
                         <Route exact path='/kurse' component={Template} />
                         <Route exact path='/dozenten' component={Template} />
-                        <Route exact path='/vorlesungen' component={Template} />
                     </Switch> 
                 </Router>
             </div>
