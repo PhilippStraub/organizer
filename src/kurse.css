@@ -1,5 +1,5 @@
 
-#inputGroupPrepend2{
+#inp #inputGroupPrepend2{
     background-color: #E30013;
     color: #ffffff;
     border-color: #E30013;
@@ -9,14 +9,14 @@
     box-shadow: 10px 10px 12px -7px rgba(51,51,51,1);
 }
 
-.input-group .form-control{
+#inp-g .form-control{
     border-color: #ffffff;
     -webkit-box-shadow: 10px 10px 12px -7px rgba(51,51,51,1);
     -moz-box-shadow: 10px 10px 12px -7px rgba(51,51,51,1);
     box-shadow: 10px 10px 12px -7px rgba(51,51,51,1);
 }
 
-.input-group .form-control:focus {
+#inp-g .form-control:focus {
     border-color: #E30013;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 10px rgba(247, 101, 91, 0.5);
 }
@@ -46,10 +46,6 @@
 
 #search{
     margin-top: 10px;
-}
-
-form{
-    margin: 0;
 }
 
 .row{

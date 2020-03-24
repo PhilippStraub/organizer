@@ -149,7 +149,29 @@ class Template extends React.Component{
 }
 
 
-ReactDOM.render(<Template />, document.getElementById('root'));
+class Index extends React.Component{
+    //Template which we will import in other views to display content.
+    //this component needs an anchor to add components in the inside.
+    render() {
+        return(
+            <div>
+                <Router>
+                    <Switch>
+                        <Route exact path='/login' component={Login} />
+                        <Route exact path='/' component={Template} />
+                        <Route exact path='/kurse' component={Template} />
+                        <Route exact path='/dozenten' component={Template} />
+                        <Route exact path='/vorlesungen' component={Template} />
+                    </Switch> 
+                </Router>
+            </div>
+
+        );
+    }
+}
+
+
+ReactDOM.render(<Index />, document.getElementById('root'));
 // ReactDOM.render(<Login />, document.getElementById('root'));
 
 

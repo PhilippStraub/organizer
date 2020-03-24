@@ -30,7 +30,7 @@ main{
     
 }
 
-.form-row{
+#row{
     margin: 13px;
     margin-left: 20px;
     margin-right: 20px;
@@ -74,8 +74,8 @@ main{
     
 }
 
-form{
-    margin-top: 70px;
+#loginForm{
+    margin-top: 40px;
 }
 
 .inputfields{

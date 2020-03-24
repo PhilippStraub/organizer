@@ -56,9 +56,9 @@ class Login extends React.Component {
             <hr></hr>       
             
 
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} id="loginForm">
               <div className="inputfields">
-                <div className="form-row">
+                <div className="form-row" id="row">
                   <div className="input-group">
                     <div className="input-group-prepend">
                       <span className="input-group-text" id="inputGroupPrepend2">
@@ -69,7 +69,7 @@ class Login extends React.Component {
                   </div>
                 </div>
 
-                <div className="form-row">
+                <div className="form-row" id="row">
                   <div className="input-group">
                     <div className="input-group-prepend">
                       <span className="input-group-text" id="inputGroupPrepend2">

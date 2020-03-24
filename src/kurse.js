@@ -15,8 +15,8 @@ class Kurse extends React.Component{
                     <form onSubmit={this.handleSubmit} id="kurs">
                         <div className="inputfields">
                             <div className="form-row">
-                                <div className="input-group">
-                                    <div className="input-group-prepend">
+                                <div className="input-group" id="inp-g">
+                                    <div className="input-group-prepend" id="inp">
                                     <span className="input-group-text" id="inputGroupPrepend2">
                                         +
                                     </span>
@@ -30,8 +30,8 @@ class Kurse extends React.Component{
                     <form onSubmit={this.handleSubmit} id="semester">
                         <div className="inputfields">
                             <div className="form-row">
-                                <div className="input-group">
-                                    <div className="input-group-prepend">
+                                <div className="input-group" id="inp-g">
+                                    <div className="input-group-prepend" id="inp">
                                     <span className="input-group-text" id="inputGroupPrepend2">
                                         +
                                     </span>
