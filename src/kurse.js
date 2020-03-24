@@ -21,7 +21,7 @@ class Kurse extends React.Component{
                                         +
                                     </span>
                                     </div>
-                                    <input type="text" className="form-control" name="kurs" placeholder="Kurs" required />
+                                    <input type="text" className="form-control" name="addKurs" placeholder="Kurs" required />
                                 </div>
                             </div>
                         </div>
@@ -36,7 +36,7 @@ class Kurse extends React.Component{
                                         +
                                     </span>
                                     </div>
-                                    <input type="text" className="form-control" name="semester" placeholder="Semester" required />
+                                    <input type="text" className="form-control" name="addSemester" placeholder="Semester" required />
                                 </div>
                             </div>
                         </div>
@@ -48,11 +48,11 @@ class Kurse extends React.Component{
                     <hr></hr>
                     <form>
                         <div className="row">
-                            <div className="col">
-                                <input type="text" className="form-control" placeholder="First name" />
+                            <div className="col" id="searchKurs">
+                                <input type="text" className="form-control" name="kurs" placeholder="Kurs" />
                             </div>
-                            <div className="col">
-                            <   input type="text" className="form-control" placeholder="Last name" />
+                            <div className="col" id="searchSemester">
+                            <   input type="text" className="form-control" name="semester" placeholder="Semester" />
                             </div>
                         </div>
                     </form>
