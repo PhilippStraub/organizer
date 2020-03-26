@@ -7,58 +7,72 @@ class Kurse extends React.Component{
     //These .js Files will have two different main components: One full and one shorter view
     //the export default will always be the shorter version
     //that way we're able to include them here in our home view but also seperate them.
-constructor() {
-    super();
-    this.handleSubmit = this.handleSubmit.bind(this);
+    constructor() {
+        super();
+        this.handleSubmitKurs = this.handleSubmitKurs.bind(this);
+    }
+    
+    handleSubmitKurs(event) {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        alert("erf");
+        var object = {};
+        data.forEach(function(value, key){
+            object[key] = value;
+        });
+        var json = JSON.stringify(object);
+        console.log(json);
+        
+        fetch('http://localhost:8080/authenticate', {
+          method: 'POST',
+          body: {
+            "username":"admin",
+            "password":"password"
+        },
+        }).then((res) => {
+          if(res.ok){
+            //return response.json();
+          }else{
+            
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
     }
 
-    handleSubmit(event) {
-        alert("PEnis");
-    event.preventDefault();
-    const data = new FormData(event.target);
-    
-    fetch('/api/form-submit-url', {
-        method: 'POST',
-        body: data,
-    }).then((res) => {
-        if(res.ok){
-        //return response.json();
-        }else{
-        
-        }
-    }).catch((err) => {
-        console.log(err);
-    });
-}
+    handleSubmitSemester(event){
+        alert("jo");
+    }
+
     render() {
         return(
             <div>
                 <div id="add">
-                    <form onSubmit={this.handleSubmit} id="kurs">
+                    <form onSubmit={this.handleSubmitKurs} id="kurs" name="Kursform">
                         <div className="inputfields">
                             <div className="form-row">
                                 <div className="input-group" id="inp-g">
                                     <div className="input-group-prepend" id="inp">
-                                    <span className="input-group-text" id="inputGroupPrepend2" onClick={this.handleSubmit}>
-                                        +
-                                    </span>
+                                        <span className="input-group-text" id="inputGroupPrepend2">
+                                            +
+                                        </span>
                                     </div>
-                                    <input type="text" className="form-control" name="addKurs" placeholder="Kurs" required />
+                                    <input type="text" className="form-control" name="kurBezeichnung" placeholder="Kurs" required />
                                 </div>
                             </div>
                         </div>
                     </form>
 
-                    <form onSubmit={this.handleSubmit} id="semester">
+                    <form onSubmit={this.handleSubmitSemester} id="semester">
                         <div className="inputfields">
                             <div className="form-row">
                                 <div className="input-group" id="inp-g">
                                     <div className="input-group-prepend" id="inp">
-                                    <span className="input-group-text" id="inputGroupPrepend2" onClick={this.handleSubmit}>
+                                    <span className="input-group-text" id="inputGroupPrepend2" onClick={this.handleSubmitSemester}>
                                         +
                                     </span>
                                     </div>
-                                    <input type="text" className="form-control" name="addSemester" placeholder="Semester" required />
+                                    <input type="text" className="form-control" name="sem_bez" placeholder="Semester" required />
                                 </div>
                             </div>
                         </div>

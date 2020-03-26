@@ -21,23 +21,58 @@ class Error extends React.Component{
 class Login extends React.Component {
   constructor() {
     super();
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.autheticate = this.autheticate.bind(this);
   }
 
-  handleSubmit(event) {
+  autheticate(event) {
     event.preventDefault();
     const data = new FormData(event.target);
-    
-    fetch('/api/form-submit-url', {
+    var object = {};
+    data.forEach(function(value, key){
+      object[key] = value;
+    });
+    var json = JSON.stringify(object);
+
+    fetch('http://localhost:8080/authenticate', {
       method: 'POST',
-      body: data,
-    }).then((res) => {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: json,
+    })
+    .then((res) => {
       if(res.ok){
-        //return response.json();
+        return res.json();
       }else{
         ReactDOM.render(<Error />, document.getElementById('field'));
       }
-    }).catch((err) => {
+    })
+    .then((data) => {
+      if(data){
+        var token;
+        var user;
+        Object.keys(data).forEach(key => { 
+          user = key;
+          token = data[key];  
+        });
+  
+        function setCookie(cname, cvalue, exhours) {
+          var d = new Date();
+          d.setTime(d.getTime() + (exhours*60*60*1000));
+          var expires = "expires="+ d.toUTCString();
+          document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+  
+        setCookie("token", token, 5);
+        setCookie("user", document.getElementById("nutzer").value, 5);
+        
+        window.location.reload();
+        
+      } else {
+
+      }
+    })
+    .catch((err) => {
       console.log(err);
     });
   }
@@ -56,7 +91,7 @@ class Login extends React.Component {
             <hr></hr>       
             
 
-            <form onSubmit={this.handleSubmit} id="loginForm">
+            <form onSubmit={this.autheticate} id="loginForm">
               <div className="inputfields">
                 <div className="form-row" id="row">
                   <div className="input-group">
@@ -65,7 +100,7 @@ class Login extends React.Component {
                         <img src={user} className="user" alt="" />
                       </span>
                     </div>
-                    <input type="text" className="form-control" name="username" placeholder="Nutzer" required />
+                    <input type="text" className="form-control" name="username" placeholder="Nutzer" id="nutzer" required />
                   </div>
                 </div>
 

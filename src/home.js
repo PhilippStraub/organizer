@@ -13,7 +13,7 @@ class Home extends React.Component{
             <div>
                 <Kurse />
                 <div className="content" id="dozenten">
-                    <a href="#">
+                    <a>
                         <h1 className="display-4">Dozenten</h1>
                         <hr></hr>
                     </a>
@@ -22,7 +22,7 @@ class Home extends React.Component{
                             
                 </div>
                 <div className="content" id="termine">
-                    <a href="#">
+                    <a>
                         <h1 className="display-4">Termine</h1>
                         <hr></hr>
                     </a>

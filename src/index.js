@@ -10,6 +10,33 @@ import Kurse from './kurse';
 import Dozenten from './dozenten';
 import * as serviceWorker from './serviceWorker';
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+}
+
+function check(){
+    fetch('http://localhost:8080/termine/0', {
+          method: 'GET',
+        }).then((res) => {
+          if(res.ok){
+            return true;
+          }else{
+            return false;
+          }
+        })
+}
 
 class NavItemsHome extends React.Component{
     render() {
@@ -90,7 +117,7 @@ class Template extends React.Component{
                                 </Switch> 
                             </div>
                             <div id="user">
-                                <img src={user} id="usericon" alt="" /> Nutzer
+                                <img src={user} id="usericon" alt="" /> {getCookie("user")}
                             </div>
                         
                             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -118,23 +145,62 @@ class Template extends React.Component{
 }
 
 
+
 class Index extends React.Component{
     //Template which we will import in other views to display content.
     //this component needs an anchor to add components in the inside.
+    constructor() {
+        super();
+        this.isAuth = this.isAuth;
+    }
+
+    isAuth(){
+        if(getCookie("token").length<5){
+            return false;
+            
+        } else {
+            if(check()==true){
+                return true;
+            } else{
+                return false;
+            }
+            
+        }
+    }
+    
     render() {
-        return(
+        if(this.isAuth()){
+            return(
+            
+                <div>
+                    <Router>
+                        <Switch>
+                            <Route exact path='/login' component={Login} />
+                            <Route exact path='/' component={Template} />
+                            <Route exact path='/kurse' component={Template} />
+                            <Route exact path='/dozenten' component={Template} />
+                        </Switch> 
+                    </Router>
+                </div>
+    
+            );
+        } else {
+            return(
+            
             <div>
                 <Router>
                     <Switch>
-                        <Route exact path='/login' component={Login} />
-                        <Route exact path='/' component={Template} />
-                        <Route exact path='/kurse' component={Template} />
-                        <Route exact path='/dozenten' component={Template} />
+                        <Route exact path='/' component={Login} />
                     </Switch> 
                 </Router>
             </div>
 
         );
+
+        }
+
+
+        
     }
 }
 
