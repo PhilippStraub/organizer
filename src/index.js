@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import './index.css';
 import user from './data/person.svg';
+import logout from './data/logout.svg';
 
 import Login from './Login';
 import Home from './home';
@@ -85,6 +86,15 @@ class NavItemsDozenten extends React.Component{
 class Template extends React.Component{
     //Template which we will import in other views to display content.
     //this component needs an anchor to add components in the inside.
+    constructor() {
+        super();
+        this.logoutUser = this.logoutUser;
+      }
+    
+    logoutUser(){
+        document.cookie = "token=; path=/;";
+        window.location.reload();
+    }
     render() {
         return(
             <div>
@@ -107,7 +117,7 @@ class Template extends React.Component{
                                 </Switch> 
                             </div>
                             <div id="user">
-                                <img src={user} id="usericon" alt="" /> {getCookie("user")}
+                                <img src={user} id="usericon" alt="" /> {getCookie("user")} <img src={logout} id="logout" alt="logout" onClick={this.logoutUser} />
                             </div>
                         
                             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
