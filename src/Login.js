@@ -66,7 +66,7 @@ class Login extends React.Component {
         setCookie("token", token, 5);
         setCookie("user", document.getElementById("nutzer").value, 5);
         
-        window.location.reload();
+        window.location.replace("/");
         
       } else {
 

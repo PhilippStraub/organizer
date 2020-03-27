@@ -1,6 +1,22 @@
 import React from 'react';
 import './kurse.css';
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+}
+
 
 class Kurse extends React.Component{
     //Later there will be a .js for each header in menu like Dozenten, Termine, etc.
@@ -15,7 +31,6 @@ class Kurse extends React.Component{
     handleSubmitKurs(event) {
         event.preventDefault();
         const data = new FormData(event.target);
-        alert("erf");
         var object = {};
         data.forEach(function(value, key){
             object[key] = value;
@@ -23,12 +38,13 @@ class Kurse extends React.Component{
         var json = JSON.stringify(object);
         console.log(json);
         
-        fetch('http://localhost:8080/authenticate', {
+        fetch('http://localhost:8080/kurs', {
           method: 'POST',
-          body: {
-            "username":"admin",
-            "password":"password"
-        },
+          headers: {
+            "content-type": "application/json",
+            "authorization": "Bearer " + getCookie("token")
+          },
+          body: json,
         }).then((res) => {
           if(res.ok){
             //return response.json();

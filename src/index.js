@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import './index.css';
 import user from './data/person.svg';
 
@@ -26,17 +26,7 @@ function getCookie(cname) {
     return "";
 }
 
-function check(){
-    fetch('http://localhost:8080/termine/0', {
-          method: 'GET',
-        }).then((res) => {
-          if(res.ok){
-            return true;
-          }else{
-            return false;
-          }
-        })
-}
+
 
 class NavItemsHome extends React.Component{
     render() {
@@ -152,6 +142,7 @@ class Index extends React.Component{
     constructor() {
         super();
         this.isAuth = this.isAuth;
+        this.isAdmin = this.isAdmin;
     }
 
     isAuth(){
@@ -159,55 +150,58 @@ class Index extends React.Component{
             return false;
             
         } else {
-            if(check()==true){
-                return true;
-            } else{
-                return false;
-            }
+            return true;
             
+        }
+    }
+    isAdmin(){
+        if(getCookie("user") == "admin"){
+            return true;
+        } else{
+            return false;
         }
     }
     
     render() {
         if(this.isAuth()){
+            //Authentiziert
+            if(this.isAdmin){
+                //Admin-Ansicht
+                return(
+                    <div>
+                        <Router>
+                            <Switch>
+                                <Route exact path='/login' component={Login} />
+                                <Route exact path='/' component={Template} />
+                                <Route exact path='/kurse' component={Template} />
+                                <Route exact path='/dozenten' component={Template} />
+                            </Switch> 
+                        </Router>
+                    </div>
+                );
+            } else {
+                //Dozentenansicht
+
+
+            }
+        } else {
             return(
-            
                 <div>
                     <Router>
                         <Switch>
                             <Route exact path='/login' component={Login} />
-                            <Route exact path='/' component={Template} />
-                            <Route exact path='/kurse' component={Template} />
-                            <Route exact path='/dozenten' component={Template} />
+                            <Redirect from="*" to="/login" />
                         </Switch> 
                     </Router>
                 </div>
-    
             );
-        } else {
-            return(
-            
-            <div>
-                <Router>
-                    <Switch>
-                        <Route exact path='/' component={Login} />
-                    </Switch> 
-                </Router>
-            </div>
-
-        );
-
-        }
-
-
-        
+        }        
     }
 }
 
 
 ReactDOM.render(<Index />, document.getElementById('root'));
 // ReactDOM.render(<Login />, document.getElementById('root'));
-
 
 
 
