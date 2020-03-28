@@ -32,6 +32,7 @@ class Login extends React.Component {
       object[key] = value;
     });
     var json = JSON.stringify(object);
+    alert(json);
 
     fetch('http://localhost:8080/authenticate', {
       method: 'POST',

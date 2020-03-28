@@ -1,0 +1,116 @@
+
+.form-row{
+    margin:0;
+}
+
+.inputfields {
+    margin-top: 0;
+}
+
+#dozent{
+    margin-top: 40px;
+    width: 48%;
+    height: auto;
+    display: inline-block;
+    margin-right: 4%;
+}
+
+#vorlesung{
+    margin-top: 40px;
+    width: 48%;
+    height: auto;
+    display: inline-block;
+    
+}
+
+#search{
+    margin-top: 10px;
+}
+
+.row{
+    margin-top: 6px;
+}
+
+
+#searchDozent{
+    padding-right: 0;
+    margin-right: 4%;
+}
+
+#searchVorlesung{
+    padding-left: 0;
+}
+
+.mb-2{
+    text-decoration: underline;
+}
+#inputDozent{
+    width: 100%;
+    float: right;
+}
+
+#inputVorlesung{
+    width: 100%;
+    float: left;
+}
+#dozent{
+    width: 100%;
+    height: auto;
+    display: inline-block;
+}
+
+#vorlesung{
+    width: 100%;
+    height: auto;
+    display: inline-block;
+    margin-top: -10px;
+    margin-bottom: 0;
+}
+
+@media (min-width: 1300px){
+    #inputDozent{
+        width: 50%;
+        float: right;
+    }
+    
+    #inputVorlesung{
+        width: 50%;
+        float: left;
+    }
+    #dozent{
+        width: 100%;
+        height: auto;
+        display: inline-block;
+    }
+    
+    #vorlesung{
+        width: 100%;
+        height: auto;
+        display: inline-block;
+        margin-top: -10px;
+        margin-bottom: 0;
+    }
+}
+
+
+@media (max-width: 600px) {
+    #dozent{
+        width: 100%;
+        height: auto;
+        display: inline-block;
+    }
+    
+    #vorlesung{
+        width: 100%;
+        height: auto;
+        display: inline-block;
+        margin-top: -10px;
+        margin-bottom: 0;
+    }
+
+    #search{
+        margin-top: 0;
+    }
+
+    
+  }

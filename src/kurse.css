@@ -46,7 +46,7 @@
     display: inline-block;
 }
 
-#search{
+#show{
     margin-top: 10px;
 }
 
@@ -64,6 +64,74 @@
     padding-left: 0;
 }
 
+#show-header{
+    text-align: center;
+}
+
+#inputKurs{
+    width: 75%;
+    float: right;
+}
+
+#inputSemester{
+    width: 75%;
+    float: left;
+}
+
+#termine-search{
+    margin-left: 4%;
+    background-color: #E30013;
+    border-color: #E30013;
+}
+
+cite{
+    color: #5C6971;
+}
+
+#show-main{
+    margin-top: -5px;
+    /* border-top: solid 1px #5C6971;
+    border-left: solid 1px #5C6971;
+    border-right: solid 1px #5C6971;
+    border-bottom: solid 1px #5C6971; */
+    border-radius: 3.5px;
+}
+
+#show-main:hover{
+    border-color:#ffffff;
+}
+
+.kurs{
+    padding: .375rem .75rem;
+    /* border-bottom: solid 1px #5C6971; */
+    text-align: center;
+    margin-left: 9px;
+    margin-right: 9px;
+
+}
+
+.kurs:hover{
+    color: white;
+    background-color: #E30013;
+    border-radius: 3.5px;
+}
+
+
+.semester{
+    padding: .175rem .75rem;
+    text-align: center;
+    margin-left: 18px;
+    margin-right: 18px;
+    border-radius: 3.5px;
+}
+
+.semester:hover{
+    color: white;
+    background-color: #E30013;
+}
+
+
+
 @media (min-width: 1300px){
     #inputKurs{
         width: 50%;
@@ -73,6 +141,9 @@
     #inputSemester{
         width: 50%;
         float: left;
+    }
+    #termine-search{
+        margin-left: 20px;
     }
 }
 
@@ -94,6 +165,16 @@
 
     #search{
         margin-top: 0;
+    }
+
+    #inputKurs{
+        width: 65%;
+        float: right;
+    }
+    
+    #inputSemester{
+        width: 65%;
+        float: left;
     }
 
     
