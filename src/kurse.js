@@ -55,22 +55,21 @@ class Kurse extends React.Component{
         });
         var json = JSON.stringify(object);
         console.log(json);
+        console.log(getCookie("token"));
         
         fetch('http://localhost:8080/kurs', {
           method: 'POST',
+        //   mode: 'no-cors',
+        //   cache: 'no-cache',
+        //   credentials: 'include',
           headers: {
-            "content-type": "application/json",
-            "authorization": "Bearer " + getCookie("token")
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + getCookie("token")
 
           },
-          body: json,
-        }).then((res) => {
-          if(res.ok){
-            //return response.json();
-          }else{
-            
-          }
-        }).catch((err) => {
+          body: json
+        })
+        .catch((err) => {
           console.log(err);
         });
     }
@@ -150,14 +149,26 @@ class Kurse extends React.Component{
 
     showSemester(kursName,kursId){
         //Kurs in Inputfeld eintragen
-        document.getElementById("inputKurs").value = kursName;
+        document.getElementById("inputAddKurs").value = kursName;
 
         //Mit kursId nach Semester des Kurses suchen
+        
         // var semester = document.createElement("div");
         // semester.className = "semester"
         // semester.id = semId;
         // semester.innerHTML = "";
         // document.getElementById("show").appendChild(semester).after(document.getElementById(kursId));
+    }
+
+    lookupTermineSemester(kursId, semId){
+
+        //Anfrage mit IDs ans Backend schicken, an "Termine" anhängen
+
+
+
+        //Namen von kursId und semId aus Abfrage holen und in eingabe felder packen
+        // document.getElementById("inputKurs").value = 
+        // document.getElementById("inputSemester").value = 
     }
     
 
@@ -177,7 +188,7 @@ class Kurse extends React.Component{
                                             +
                                         </span>
                                     </div>
-                                    <input id="inputKurs" type="text" className="form-control" name="kurBezeichnung" placeholder="Kurs" required />
+                                    <input id="inputAddKurs" type="text" className="form-control" name="kurBezeichnung" placeholder="Kurs" required />
                                 </div>
                             </div>
                         </div>
@@ -192,7 +203,7 @@ class Kurse extends React.Component{
                                         +
                                     </span>
                                     </div>
-                                    <input type="text" className="form-control" name="sem_bez" placeholder="Semester" />
+                                    <input id="inputAddSemester" type="text" className="form-control" name="sem_bez" placeholder="Semester" />
                                 </div>
                             </div>
                         </div>
