@@ -116,19 +116,25 @@ cite{
     border-radius: 3.5px;
 }
 
+#semesterRahmen{
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 3.5px;
+}
+
 
 .semester{
     padding: .175rem .75rem;
     text-align: center;
-    margin-left: 18px;
-    margin-right: 18px;
+    border: solid 1px #ffffff;
     border-radius: 3.5px;
 }
 
 .semester:hover{
-    color: white;
-    background-color: #E30013;
+    color: #E30013;
+    border: solid 1px #E30013;
 }
+
 
 
 

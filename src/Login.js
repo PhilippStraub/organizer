@@ -33,7 +33,7 @@ class Login extends React.Component {
     });
     var json = JSON.stringify(object);
 
-    fetch('http://localhost:8080/authenticate', {
+    fetch('/authenticate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -25,25 +25,27 @@ class Kurse extends React.Component{
     //the export default will always be the shorter version
     //that way we're able to include them here in our home view but also seperate them.
 
-    constructor() {
-        super();
+    constructor(probs) {
+        super(probs);
         this.handleSubmitKurs = this.handleSubmitKurs.bind(this);
-        this.showKurse= this.showKurse;
-        this.showSemester = this.showSemester;
+        this.showKurse = this.showKurse.bind(this);
+        this.showSemester = this.showSemester.bind(this);
+        this.intoTermine = this.intoTermine;
         this.state = {
-            fetchKurs: {
+            showKurse: {
                 "kurId": "",
                 "kurBezeichnung": ""
             },
-            fetchSemester: {
+            showSemester: {
                 "semId": "",
                 "sem_bez": "",
                 "kurs": {
-                    "kurId": "",
-                    "kurBezeichnung": ""
+                "kurId": "",
+                "kurBezeichnung": ""
                 }
+                
             }
-        }
+        };
     }
     
     handleSubmitKurs(event) {
@@ -54,10 +56,8 @@ class Kurse extends React.Component{
             object[key] = value;
         });
         var json = JSON.stringify(object);
-        console.log(json);
-        console.log(getCookie("token"));
         
-        fetch('http://localhost:8080/kurs', {
+        fetch('/kurs', {
           method: 'POST',
         //   mode: 'no-cors',
         //   cache: 'no-cache',
@@ -68,6 +68,12 @@ class Kurse extends React.Component{
 
           },
           body: json
+        })
+        .then((res) => {
+            if(res.ok){
+                document.getElementsByName('Kursform')[0].reset();
+                console.log("Kurs wurde erfolgreich angelegt.")
+            }
         })
         .catch((err) => {
           console.log(err);
@@ -90,6 +96,7 @@ class Kurse extends React.Component{
             document.getElementById("message").appendChild(zitatneu);
             var element = document.getElementById("show-main");
             document.getElementById("show").removeChild(element);
+            document.getElementsByName('Kursform')[0].reset();
 
         } else{
             
@@ -101,9 +108,10 @@ class Kurse extends React.Component{
             document.getElementById("message").appendChild(zitatneu);
             var showmain = document.createElement("div");
             showmain.id = "show-main"
+            document.getElementById("show").appendChild(showmain);
             
 
-            // let kurData = [];
+            
             // kurData[0] = '<div class="kurs">WWI2018C</div>';
             // kurData[1] = <div class="kurs">WWI2018H</div>;
             // kurData[2] = <div class="kurs">WWI2018I</div>;
@@ -116,32 +124,36 @@ class Kurse extends React.Component{
             
             
             //fetch ABfrage mit Kursen muss hier rein und in die innerHTML von showmain geschrieben werden.
-            let kurData = [];
-            fetch("http://localhost:8080/kurs/0", {
+            fetch("/kurs/0", {
                 "method": "GET",
                 "headers": {
                     "authorization": "Bearer " + getCookie("token")
                 }
             })
-            .then(response => {
+            .then(dataWrappedByPromise => dataWrappedByPromise.json())
+            .then((response) => {
+                console.log(response);
 
                 this.setState({
-                    fetchKurs: response.data
+                    showKurse: response
                 });
 
-                for (let i=0; i < this.state.fetchKurs.length; i++){
-
-                    showmain.innerHTML += <div class="kurs" id={this.state.fetchKurs[i]["kurId"]} onClick={() => this.showSemester(this.state.fetchKurs[i]["kurBezeichnung"],this.state.fetchKurs[i]["kurId"])}>{this.state.fetchKurs[i]["kurBezeichnung"]}</div>;
+                
+                for (let i=0; i < this.state.showKurse.length; i++){
+                    var kursElement = document.createElement("div");
+                    kursElement.className = "kurs";
+                    kursElement.id = this.state.showKurse[i]["kurId"];
+                    kursElement.onclick = () => this.showSemester(this.state.showKurse[i]["kurBezeichnung"],this.state.showKurse[i]["kurId"]);
+                    kursElement.innerHTML = this.state.showKurse[i]["kurBezeichnung"]
+                    showmain.appendChild(kursElement);
                 }  
-
-
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log(err);
             })
             
-
-            document.getElementById("show").appendChild(showmain);
+            
+        
         }
         
         
@@ -152,12 +164,58 @@ class Kurse extends React.Component{
         document.getElementById("inputAddKurs").value = kursName;
 
         //Mit kursId nach Semester des Kurses suchen
-        
-        // var semester = document.createElement("div");
-        // semester.className = "semester"
-        // semester.id = semId;
-        // semester.innerHTML = "";
-        // document.getElementById("show").appendChild(semester).after(document.getElementById(kursId));
+        if(document.getElementById(kursId).nextSibling == null || document.getElementById(kursId).nextSibling.id != "semesterRahmen"){
+            var semRahmen = document.createElement("div");
+            semRahmen.id = "semesterRahmen";
+            // semRahmen.appendChild(document.createElement("hr"));
+
+            fetch("/semester/0", {
+                "method": "GET",
+                "headers": {
+                    "authorization": "Bearer " + getCookie("token")
+                }
+            })
+            .then(dataWrappedByPromise => dataWrappedByPromise.json())
+            .then((response) => {
+                console.log(response);
+
+                this.setState({
+                    showSemester: response
+                });
+                
+
+                
+                for (let i=0; i < this.state.showSemester.length; i++){
+                    if(this.state.showSemester[i]["kurs"]["kurId"] == kursId){
+
+
+                        var semElement = document.createElement("div");
+                        semElement.className = "semester";
+                        semElement.id = this.state.showSemester[i]["semId"];
+                        semElement.onclick = () => this.intoTermine(kursName, this.state.showSemester[i]["sem_bez"]); 
+                        semElement.innerHTML = this.state.showSemester[i]["sem_bez"];
+                        semRahmen.appendChild(semElement);
+                    }
+                    
+                }  
+            })
+            .then(() => {            
+                document.getElementById(kursId).parentNode.insertBefore(semRahmen, document.getElementById(kursId).nextSibling);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        } else{
+            document.getElementById("inputAddKurs").value = "";
+            while (document.getElementById(kursId).nextSibling !=null && document.getElementById(kursId).nextSibling.id == "semesterRahmen") {
+                document.getElementById(kursId).parentNode.removeChild(document.getElementById(kursId).nextSibling);
+              }
+        }
+    }
+
+    intoTermine(kursName, semName){
+        document.getElementById("inputKurs").value = kursName;
+        document.getElementById("inputSemester").value = semName;
     }
 
     lookupTermineSemester(kursId, semId){
@@ -184,9 +242,9 @@ class Kurse extends React.Component{
                             <div className="form-row">
                                 <div className="input-group" id="inp-g">
                                     <div className="input-group-prepend" id="inp" >
-                                        <span className="input-group-text" id="inputGroupPrepend2">
+                                        <button className="input-group-text" id="inputGroupPrepend2" type="submit">
                                             +
-                                        </span>
+                                        </button>
                                     </div>
                                     <input id="inputAddKurs" type="text" className="form-control" name="kurBezeichnung" placeholder="Kurs" required />
                                 </div>
@@ -255,7 +313,7 @@ class Kurse extends React.Component{
 
         );
         
-      }
+    }
 
 }
 

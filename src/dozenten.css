@@ -1,14 +1,64 @@
 
+#inp #inputGroupPrepend2{
+    background-color: #E30013;
+    color: #ffffff;
+    border-color: #E30013;
+    border: 1px solid gray;
+    font-size: 20px;
+    -webkit-box-shadow: 10px 10px 12px -7px rgba(51,51,51,1); 
+    -moz-box-shadow: 10px 10px 12px -7px rgba(51,51,51,1); 
+    box-shadow: 10px 10px 12px -7px rgba(51,51,51,1);
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+#inp-g .form-control{
+    border: 1px solid gray;
+    
+    -webkit-box-shadow: 10px 10px 12px -7px rgba(51,51,51,1); 
+    -moz-box-shadow: 10px 10px 12px -7px rgba(51,51,51,1); 
+    box-shadow: 10px 10px 12px -7px rgba(51,51,51,1);
+}
+
+#inp-g .form-control:focus {
+    border-color: #E30013;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 10px rgba(247, 101, 91, 0.5); 
+}
+
+#dozÜberschrift{
+    
+    text-align: left;
+    display: inline;
+    margin-left: 20px;
+}
+#vorÜberschrift{
+    display: inline;
+    float: right;
+    margin-right: 20px;
+}
+
 .form-row{
     margin:0;
+}
+.list-group{
+    max-height: 450px;
+    margin-bottom: 10px;
+    overflow-y:scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .inputfields {
     margin-top: 0;
 }
 
+.content{
+    
+    box-shadow: none;
+}
+
+
 #dozent{
-    margin-top: 40px;
+    
     width: 48%;
     height: auto;
     display: inline-block;
@@ -22,15 +72,44 @@
     display: inline-block;
     
 }
+#dozentenverzeichnis {
+    width: 49.5%;
+    float: left;
+}
 
-#search{
-    margin-top: 10px;
+#vorlesungverzeichnis {
+    width: 49.5%;
+    float: right;
+}
+
+#anlegen{
+     margin-left: 46%;   
+}
+
+#neuerdozent{
+    margin-top: 100px;
+    padding-top: 20px;
+}
+
+#neuevorlesung{
+    margin-top: 25px;
+    padding-top: 20px;
+}
+
+
+#search {
+    margin-top: 25px;
+    height: 555px;
 }
 
 .row{
     margin-top: 6px;
 }
 
+#col-md-4-mb-3 {
+    padding-left: 12px;
+    padding-right: 12px;
+}
 
 #searchDozent{
     padding-right: 0;
@@ -53,11 +132,7 @@
     width: 100%;
     float: left;
 }
-#dozent{
-    width: 100%;
-    height: auto;
-    display: inline-block;
-}
+
 
 #vorlesung{
     width: 100%;
@@ -67,14 +142,14 @@
     margin-bottom: 0;
 }
 
-@media (min-width: 1300px){
+@media (max-width: 1300px){
     #inputDozent{
-        width: 50%;
+        width: 100%;
         float: right;
     }
     
     #inputVorlesung{
-        width: 50%;
+        width: 100%;
         float: left;
     }
     #dozent{
