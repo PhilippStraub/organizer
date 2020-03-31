@@ -39,6 +39,10 @@
     margin-right: 4%;
 }
 
+#inputAddIdKurs{
+    display: none;
+}
+
 #semester{
     margin-top: 40px;
     width: 48%;
@@ -95,6 +99,7 @@ cite{
     border-right: solid 1px #5C6971;
     border-bottom: solid 1px #5C6971; */
     border-radius: 3.5px;
+
 }
 
 #show-main:hover{
@@ -102,13 +107,51 @@ cite{
 }
 
 .kurs{
+    width: 80%;
+    height: auto;
     padding: .375rem .75rem;
     /* border-bottom: solid 1px #5C6971; */
     text-align: center;
+    /* margin-left: 9px; */
+    white-space: nowrap;
+}
+.check{
+    width: 10%;
+    padding: .375rem .75rem;
+    /* border-bottom: solid 1px #5C6971; */
+    text-align: center;
+
+    /* margin-right: 9px; */
+    white-space: nowrap;
+}
+
+.trash{
+    width: 10%;
+    padding: .375rem .75rem;
+    
+}
+.frameOfKurs{
+    flex: 1 1 0%;
+}
+
+.d-flex{
     margin-left: 9px;
     margin-right: 9px;
-
 }
+
+.check{
+    text-align: center;
+}
+
+.trash{
+    text-align: center;
+}
+
+.trash:hover{
+    -webkit-transform: scale(1.25,1.25);
+    -webkit-transition: all 0.3s ease-in-out;
+}
+
 
 .kurs:hover{
     color: white;
@@ -117,8 +160,8 @@ cite{
 }
 
 #semesterRahmen{
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 12%;
+    margin-right: 12%;
     border-radius: 3.5px;
 }
 

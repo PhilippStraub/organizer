@@ -31,6 +31,7 @@ class Kurse extends React.Component{
         this.showKurse = this.showKurse.bind(this);
         this.showSemester = this.showSemester.bind(this);
         this.intoTermine = this.intoTermine;
+        this.checkbox = this.checkbox;
         this.state = {
             showKurse: {
                 "kurId": "",
@@ -55,19 +56,19 @@ class Kurse extends React.Component{
         data.forEach(function(value, key){
             object[key] = value;
         });
+       
         var json = JSON.stringify(object);
-        
         fetch('/kurs', {
-          method: 'POST',
-        //   mode: 'no-cors',
-        //   cache: 'no-cache',
-        //   credentials: 'include',
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + getCookie("token")
+            method: 'POST',
+            //   mode: 'no-cors',
+            //   cache: 'no-cache',
+            //   credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + getCookie("token")
 
-          },
-          body: json
+            },
+            body: json
         })
         .then((res) => {
             if(res.ok){
@@ -76,13 +77,54 @@ class Kurse extends React.Component{
             }
         })
         .catch((err) => {
-          console.log(err);
+            console.log(err);
         });
+        
     }
 
     
 
     handleSubmitSemester(event){
+        event.preventDefault();
+        const data = new FormData(event.target);
+        var object = {};
+        data.forEach(function(value, key){
+            object[key] = value;
+        });
+        if(object["kurId"] != ""){
+            var KurIdArray = {};
+            KurIdArray["kurId"] = object["kurId"];
+            var jsonArray = {};
+            jsonArray["sem_bez"] = object["sem_bez"];
+            jsonArray["kurs"] =  KurIdArray;
+            var json = JSON.stringify(jsonArray);
+
+            fetch('/semester', {
+                method: 'POST',
+                //   mode: 'no-cors',
+                //   cache: 'no-cache',
+                //   credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + getCookie("token")
+    
+                },
+                body: json
+            })
+            .then((res) => {
+                if(res.ok){
+                    document.getElementsByName('Semesterform')[0].reset();
+                    console.log("Semester wurde erfolgreich dem Kurs hinzugefügt.");
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+            
+
+        } else {
+            alert("Bitte zuerst den dazugehörigen Kurs auswählen (klicken)");
+        }
         
     }
     showKurse(){  
@@ -132,7 +174,7 @@ class Kurse extends React.Component{
             })
             .then(dataWrappedByPromise => dataWrappedByPromise.json())
             .then((response) => {
-                console.log(response);
+                
 
                 this.setState({
                     showKurse: response
@@ -144,8 +186,20 @@ class Kurse extends React.Component{
                     kursElement.className = "kurs";
                     kursElement.id = this.state.showKurse[i]["kurId"];
                     kursElement.onclick = () => this.showSemester(this.state.showKurse[i]["kurBezeichnung"],this.state.showKurse[i]["kurId"]);
-                    kursElement.innerHTML = this.state.showKurse[i]["kurBezeichnung"]
-                    showmain.appendChild(kursElement);
+                    kursElement.innerHTML = this.state.showKurse[i]["kurBezeichnung"];
+                    var checkElement = document.createElement("div");
+                    checkElement.className = "check"
+                    checkElement.innerHTML = '<div class="custom-control custom-checkbox text-danger"><input type="checkbox" class="custom-control-input" id="'+ this.state.showKurse[i]["kurId"] +'check"><label class="custom-control-label" for="'+ this.state.showKurse[i]["kurId"] +'check"> </label></div>';
+                    var trashElement = document.createElement("div");
+                    trashElement.className = "trash"
+                    trashElement.innerHTML = '<svg class="bi bi-trash2-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M2.037 3.225l1.684 10.104A2 2 0 005.694 15h4.612a2 2 0 001.973-1.671l1.684-10.104C13.627 4.224 11.085 5 8 5c-3.086 0-5.627-.776-5.963-1.775z"/><path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z" clip-rule="evenodd"/></svg>';
+                    var frameofKurs = document.createElement("div");
+                    frameofKurs.className = "d-flex justify-content-center";
+                    frameofKurs.appendChild(checkElement);
+                    frameofKurs.appendChild(kursElement);
+                    frameofKurs.appendChild(trashElement);
+                    showmain.appendChild(frameofKurs);
+                    
                 }  
             })
             .catch((err) => {
@@ -163,8 +217,21 @@ class Kurse extends React.Component{
         //Kurs in Inputfeld eintragen
         document.getElementById("inputAddKurs").value = kursName;
 
+
+
+
+
+
+
+
+
+
+
+        
+        // document.getElementById(kursId).style.color = "#E30013";
+
         //Mit kursId nach Semester des Kurses suchen
-        if(document.getElementById(kursId).nextSibling == null || document.getElementById(kursId).nextSibling.id != "semesterRahmen"){
+        if(document.getElementById(kursId).parentNode.nextSibling == null || document.getElementById(kursId).parentNode.nextSibling.id != "semesterRahmen"){
             var semRahmen = document.createElement("div");
             semRahmen.id = "semesterRahmen";
             // semRahmen.appendChild(document.createElement("hr"));
@@ -177,7 +244,7 @@ class Kurse extends React.Component{
             })
             .then(dataWrappedByPromise => dataWrappedByPromise.json())
             .then((response) => {
-                console.log(response);
+                
 
                 this.setState({
                     showSemester: response
@@ -200,17 +267,34 @@ class Kurse extends React.Component{
                 }  
             })
             .then(() => {            
-                document.getElementById(kursId).parentNode.insertBefore(semRahmen, document.getElementById(kursId).nextSibling);
+                document.getElementById(kursId).parentNode.parentNode.insertBefore(semRahmen, document.getElementById(kursId).parentNode.nextSibling);
             })
             .catch((err) => {
                 console.log(err);
             })
         } else{
             document.getElementById("inputAddKurs").value = "";
-            while (document.getElementById(kursId).nextSibling !=null && document.getElementById(kursId).nextSibling.id == "semesterRahmen") {
-                document.getElementById(kursId).parentNode.removeChild(document.getElementById(kursId).nextSibling);
+            document.getElementById(kursId).style.color = "";
+            while (document.getElementById(kursId).parentNode.nextSibling !=null && document.getElementById(kursId).parentNode.nextSibling.id == "semesterRahmen") {
+                document.getElementById(kursId).parentNode.parentNode.removeChild(document.getElementById(kursId).parentNode.nextSibling);
               }
         }
+    }
+
+    checkbox(kursId){
+        function uncheckAll(divid) {
+            var checks = document.querySelectorAll('#' + divid + ' input[type="checkbox"]');
+            for(var i =0; i< checks.length;i++){
+                var check = checks[i];
+                if(!check.disabled){
+                    check.checked = false;
+                }
+            }
+            document.getElementById(kursId+"check").disabled= false;
+        }
+        uncheckAll("show-main");
+        
+        document.getElementById("inputAddIdKurs").value = kursId;
     }
 
     intoTermine(kursName, semName){
@@ -251,16 +335,16 @@ class Kurse extends React.Component{
                             </div>
                         </div>
                     </form>
-
-                    <form onSubmit={this.handleSubmitSemester} id="semester">
+                    <form onSubmit={this.handleSubmitSemester} id="semester" name="Semesterform">
                         <div className="inputfields">
                             <div className="form-row">
                                 <div className="input-group" id="inp-g">
                                     <div className="input-group-prepend" id="inp">
-                                    <span className="input-group-text" id="inputGroupPrepend2" onClick={this.handleSubmitSemester}>
-                                        +
-                                    </span>
+                                        <button className="input-group-text" id="inputGroupPrepend2" type="submit">
+                                            +
+                                        </button>
                                     </div>
+                                    <input id="inputAddIdKurs" type="text" className="form-control" name="kurId" />
                                     <input id="inputAddSemester" type="text" className="form-control" name="sem_bez" placeholder="Semester" />
                                 </div>
                             </div>

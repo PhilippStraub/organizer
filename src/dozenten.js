@@ -99,23 +99,34 @@ class Dozenten extends React.Component{
         event.preventDefault();
     const formdata = new FormData(event.target);
     var object = {};
-    formdata.forEach(function(value, key){
-      object[key] = value;
+    formdata.forEach(function(value, key) {
+        object[key] = value
     });
-    var json = JSON.stringify(object);
-    alert(json);
-        
-        fetch('http://localhost:8080/vorlesung/',
+    
+
+    var KurIdArray = {};
+    KurIdArray["dozId"] = object["dozId"];
+    var jsonArray = {};
+    jsonArray["vorName"] = object["vorName"];
+    jsonArray["dozenten"] =  KurIdArray;
+    var json = JSON.stringify(jsonArray);
+    //alert(json);
+
+    // 
+   
+        fetch('http://localhost:8080/vorlesungen/',
         {  
             method: "POST",
             headers: {
             'Content-Type': 'application/json'
           },
             body: json}
+            
     
     )
     .then(function (response) {
         console.log(response);
+        
       })
       .catch(function (error) {
         console.log(error);
@@ -203,18 +214,19 @@ class Dozenten extends React.Component{
                     <hr></hr>
                     <div class="form-row">
                         <div class="col-md-4 mb-3" id="col-md-4-mb-3">
-                            <input type="text" class="form-control" id="validationTooltip01" placeholder="ID des Dozenten" name="dozenten: dozId" required></input>
+                            <input type="text" class="form-control" id="validationTooltip01" placeholder="ID des Dozenten" name="dozId" required></input>
                         </div>
                         <div class="col-md-4 mb-3" id="col-md-4-mb-3">
-                            <input type="text" class="form-control" id="validationTooltip02" placeholder="Name der Vorlesung" name="},'vorName" required></input>
+                            <input type="text" class="form-control" id="validationTooltip02" placeholder="Name der Vorlesung" name="vorName" required></input>
                         </div>
                         
                     </div>
                    
-                    <button class="btn btn-primary" id="anlegen" type="submit">Anlegen</button>
+                    <div id="anlegen">
+                    <button class="btn btn-primary" id="anlegen" type="submit">Anlegen</button></div>
                     </form>
                     </div>
-                    <div className="content" id="search">
+                    <div className="content" id="dozsearch">
                         <br></br>
                         <h1 className="display-4" id="dozÜberschrift">Dozenten<h1 className="display-4" id="vorÜberschrift">Vorlesungen</h1></h1>
                         

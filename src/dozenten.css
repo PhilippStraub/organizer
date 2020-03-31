@@ -51,23 +51,20 @@
     margin-top: 0;
 }
 
-.content{
-    
-    box-shadow: none;
-}
 
 
 #dozent{
     
-    width: 48%;
+   
+    margin-right: 4%;
+    width: 100%;
     height: auto;
     display: inline-block;
-    margin-right: 4%;
 }
 
 #vorlesung{
-    margin-top: 40px;
-    width: 48%;
+    margin-right: 4%;
+    width: 100%;
     height: auto;
     display: inline-block;
     
@@ -83,7 +80,9 @@
 }
 
 #anlegen{
-     margin-left: 46%;   
+     display: block;
+     margin: 0 auto;
+ 
 }
 
 #neuerdozent{
@@ -97,7 +96,7 @@
 }
 
 
-#search {
+#dozsearch {
     margin-top: 25px;
     height: 555px;
 }
@@ -142,50 +141,11 @@
     margin-bottom: 0;
 }
 
-@media (max-width: 1300px){
-    #inputDozent{
-        width: 100%;
-        float: right;
-    }
-    
-    #inputVorlesung{
-        width: 100%;
-        float: left;
-    }
-    #dozent{
-        width: 100%;
-        height: auto;
-        display: inline-block;
-    }
-    
-    #vorlesung{
-        width: 100%;
-        height: auto;
-        display: inline-block;
-        margin-top: -10px;
-        margin-bottom: 0;
-    }
+#dozent{
+    width: 100%;
+    height: auto;
+    display: inline-block;
 }
 
 
-@media (max-width: 600px) {
-    #dozent{
-        width: 100%;
-        height: auto;
-        display: inline-block;
-    }
-    
-    #vorlesung{
-        width: 100%;
-        height: auto;
-        display: inline-block;
-        margin-top: -10px;
-        margin-bottom: 0;
-    }
 
-    #search{
-        margin-top: 0;
-    }
-
-    
-  }
