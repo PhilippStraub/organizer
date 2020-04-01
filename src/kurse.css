@@ -66,6 +66,14 @@
     margin-bottom: 40px;
 }
 
+#kurDelErr{
+    background-color: #E30013;
+    color: #ffffff;
+    border: none;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
 #searchKurs{
     padding-right: 0;
     margin-right: 4%;
@@ -133,10 +141,10 @@ cite{
     white-space: nowrap;
 }
 
-.d-flex:hover .kurs{
-    color: white;
-    background-color: #E30013;
-    border-radius: 3.5px;
+
+.kurs:hover + .trash{
+    -webkit-transform: scale(1.25,1.25);
+    -webkit-transition: all 0.3s ease-in-out;
 }
 
 .trash{
@@ -171,17 +179,18 @@ cite{
 }
 
 #semesterRahmen{
-    margin-left: 12%;
-    margin-right: 12%;
     border-radius: 3.5px;
 }
 
 
 .semester{
+    width: 76%;
     padding: .175rem .75rem;
     text-align: center;
     border: solid 1px #ffffff;
     border-radius: 3.5px;
+    margin-left: 2%;
+    margin-right: 2%;
 }
 
 .semester:hover{
@@ -189,7 +198,15 @@ cite{
     border: solid 1px #E30013;
 }
 
+.fuellelement{
+    width: 10%;
+    height: auto;
+}
 
+.semester:hover + .trash{
+    -webkit-transform: scale(1.25,1.25);
+    -webkit-transition: all 0.3s ease-in-out;
+}
 
 
 @media (min-width: 1300px){
