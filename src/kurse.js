@@ -19,6 +19,8 @@ function getCookie(cname) {
 }
 
 
+
+
 class Kurse extends React.Component{
     //Later there will be a .js for each header in menu like Dozenten, Termine, etc.
     //These .js Files will have two different main components: One full and one shorter view
@@ -92,6 +94,11 @@ class Kurse extends React.Component{
             object[key] = value;
         });
         if(object["kurId"] != ""){
+            var err = document.getElementById("semHinErr");
+            if(err){
+                err.parentNode.removeChild(err);
+            }
+
             var KurIdArray = {};
             KurIdArray["kurId"] = object["kurId"];
             var jsonArray = {};
@@ -123,7 +130,18 @@ class Kurse extends React.Component{
             
 
         } else {
-            alert("Bitte zuerst den dazugehörigen Kurs auswählen (klicken)");
+            var err = document.getElementById("semHinErr");
+            if(err){
+            } else{
+                var error = document.createElement("div");
+                error.className = "alert alert-danger";
+                error.id = "semHinErr"
+                error.role = "alert";
+                error.innerHTML = 'Fehler: Bitte zuerst den dazugehörigen Kurs auswählen.';
+                document.getElementById("mainKurse").insertBefore(error, document.getElementById("show"));
+            }
+          
+            
         }
         
     }
@@ -154,18 +172,6 @@ class Kurse extends React.Component{
             
 
             
-            // kurData[0] = '<div class="kurs">WWI2018C</div>';
-            // kurData[1] = <div class="kurs">WWI2018H</div>;
-            // kurData[2] = <div class="kurs">WWI2018I</div>;
-            
-            // for(let i=0; i< kurData.length; i++){
-            //     showmain.innerHTML = showmain.innerHTML + kurData[i];
-            // }
-            // showmain.innerHTML = kurData.join();
-            // showmain.innerHTML = '<div class="kurs">WWI2018H</div><div class="kurs">WWI2018I</div><div class="kurs">WWI2018J</div>';
-            
-            
-            //fetch ABfrage mit Kursen muss hier rein und in die innerHTML von showmain geschrieben werden.
             fetch("/kurs/0", {
                 "method": "GET",
                 "headers": {
@@ -189,7 +195,22 @@ class Kurse extends React.Component{
                     kursElement.innerHTML = this.state.showKurse[i]["kurBezeichnung"];
                     var checkElement = document.createElement("div");
                     checkElement.className = "check"
-                    checkElement.innerHTML = '<div class="custom-control custom-checkbox text-danger"><input type="checkbox" class="custom-control-input" id="'+ this.state.showKurse[i]["kurId"] +'check"><label class="custom-control-label" for="'+ this.state.showKurse[i]["kurId"] +'check"> </label></div>';
+                    var checkdiv = document.createElement("div");
+                    checkdiv.className = "custom-control custom-checkbox text-danger";
+                    var checkinput = document.createElement("input");
+                    checkinput.type = "checkbox";
+                    checkinput.className = "custom-control-input";
+                    checkinput.id = this.state.showKurse[i]["kurId"] +'check';
+                    // checkinput.onclick = () => this.checkbox(this.state.showKurse[i]["kurId"]);
+                    var checklabel = document.createElement("label");
+                    checklabel.className = "custom-control-label";
+                    checklabel.setAttribute("for", this.state.showKurse[i]["kurId"] +'check');
+                    // checklabel.for = this.state.showKurse[i]["kurId"] +'check';
+                    checklabel.onclick = () => this.checkbox(this.state.showKurse[i]["kurId"]);
+                    checkdiv.appendChild(checkinput);
+                    checkElement.appendChild(checkdiv);
+                    checkdiv.appendChild(checklabel);
+                    // checkdiv.innerHTML += '<label class="custom-control-label" for="'+ this.state.showKurse[i]["kurId"] +'check"></label>';
                     var trashElement = document.createElement("div");
                     trashElement.className = "trash"
                     trashElement.innerHTML = '<svg class="bi bi-trash2-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M2.037 3.225l1.684 10.104A2 2 0 005.694 15h4.612a2 2 0 001.973-1.671l1.684-10.104C13.627 4.224 11.085 5 8 5c-3.086 0-5.627-.776-5.963-1.775z"/><path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z" clip-rule="evenodd"/></svg>';
@@ -282,19 +303,29 @@ class Kurse extends React.Component{
     }
 
     checkbox(kursId){
-        function uncheckAll(divid) {
-            var checks = document.querySelectorAll('#' + divid + ' input[type="checkbox"]');
-            for(var i =0; i< checks.length;i++){
-                var check = checks[i];
-                if(!check.disabled){
-                    check.checked = false;
-                }
-            }
-            document.getElementById(kursId+"check").disabled= false;
+        // function uncheckAll(divid) {
+        //     var checks = document.querySelectorAll('#' + divid + ' input[type="checkbox"]');
+        //     for(var i =0; i< checks.length;i++){
+        //         var check = checks[i];
+        //         if(!check.disabled){
+        //             check.checked = false;
+        //         }
+        //     }
+        //     document.getElementById(kursId+"check").disabled= false;
+        // }
+        // uncheckAll("show-main");
+        var ram = document.getElementById("inputAddIdKurs").value;
+        if(ram != "" && ram != kursId){
+            document.getElementById(ram + "check").checked = false;
         }
-        uncheckAll("show-main");
         
         document.getElementById("inputAddIdKurs").value = kursId;
+        
+        
+        
+        
+        
+        
     }
 
     intoTermine(kursName, semName){
@@ -319,7 +350,7 @@ class Kurse extends React.Component{
 
         
         return(
-            <div>
+            <div id="mainKurse">
                 <div id="add">
                     <form onSubmit={this.handleSubmitKurs} id="kurs" name="Kursform">
                         <div className="inputfields">
@@ -345,7 +376,7 @@ class Kurse extends React.Component{
                                         </button>
                                     </div>
                                     <input id="inputAddIdKurs" type="text" className="form-control" name="kurId" />
-                                    <input id="inputAddSemester" type="text" className="form-control" name="sem_bez" placeholder="Semester" />
+                                    <input id="inputAddSemester" type="text" className="form-control" name="sem_bez" placeholder="Semester" required />
                                 </div>
                             </div>
                         </div>

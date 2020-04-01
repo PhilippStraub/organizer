@@ -58,6 +58,13 @@
     margin-top: 6px;
 }
 
+#semHinErr{
+    background-color: #E30013;
+    color: #ffffff;
+    border: none;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
 
 #searchKurs{
     padding-right: 0;
@@ -115,6 +122,7 @@ cite{
     /* margin-left: 9px; */
     white-space: nowrap;
 }
+
 .check{
     width: 10%;
     padding: .375rem .75rem;
@@ -125,16 +133,19 @@ cite{
     white-space: nowrap;
 }
 
+.d-flex:hover .kurs{
+    color: white;
+    background-color: #E30013;
+    border-radius: 3.5px;
+}
+
 .trash{
     width: 10%;
     padding: .375rem .75rem;
     
 }
-.frameOfKurs{
-    flex: 1 1 0%;
-}
 
-.d-flex{
+#show-main .d-flex{
     margin-left: 9px;
     margin-right: 9px;
 }
