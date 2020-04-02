@@ -33,9 +33,11 @@ class Kurse extends React.Component{
         this.showKurse = this.showKurse.bind(this);
         this.showSemester = this.showSemester.bind(this);
         this.intoTermine = this.intoTermine;
+        this.lookupTermineSemester = this.lookupTermineSemester.bind(this);
         this.checkbox = this.checkbox;
         this.deleteKurs = this.deleteKurs;
         this.deleteSemester = this.deleteSemester;
+        this.getDays = this.getDays;
         this.state = {
             showKurse: {
                 "kurId": "",
@@ -47,7 +49,37 @@ class Kurse extends React.Component{
                 "kurs": {
                 "kurId": "",
                 "kurBezeichnung": ""
+            },
+            lookupTermineSemester: {
+                "terId": "",
+                "terDatum": "",
+                "terVonUhrzeit": "",
+                "terBisUhrzeit": "",
+                "raumNr": "",
+                "verfügbar": "",
+                "vorlesungen": {
+                    "vorId": "",
+                    "vorName": "",
+                    "dozenten": {
+                        "dozId": "",
+                        "dozVorname": "",
+                        "dozNachname": "",
+                        "dozMail": "",
+                        "dozTel": "",
+                        "dozMobil": "",
+                        "password": ""
+                    }
+                },
+                "semester": {
+                    "semId": "",
+                    "sem_bez": "",
+                    "kurs": {
+                        "kurId": "",
+                        "kurBezeichnung": ""
+                    }
                 }
+            },
+            date: undefined
                 
             }
         };
@@ -62,7 +94,7 @@ class Kurse extends React.Component{
         });
        
         var json = JSON.stringify(object);
-        fetch('/kurs', {
+        fetch('https://vorlesungsplaner.herokuapp.com/kurs', {
             method: 'POST',
             //   mode: 'no-cors',
             //   cache: 'no-cache',
@@ -110,7 +142,7 @@ class Kurse extends React.Component{
             jsonArray["kurs"] =  KurIdArray;
             var json = JSON.stringify(jsonArray);
 
-            fetch('/semester', {
+            fetch('https://vorlesungsplaner.herokuapp.com/semester', {
                 method: 'POST',
                 //   mode: 'no-cors',
                 //   cache: 'no-cache',
@@ -179,7 +211,7 @@ class Kurse extends React.Component{
             
 
             
-            fetch("/kurs/0", {
+            fetch("https://vorlesungsplaner.herokuapp.com/kurs/0", {
                 "method": "GET",
                 "headers": {
                     "authorization": "Bearer " + getCookie("token")
@@ -244,7 +276,7 @@ class Kurse extends React.Component{
 
     deleteKurs(kursId){
         var errDiv = document.getElementById("kurDelErr");
-        fetch("http://localhost:8080/kurs/" + kursId, {
+        fetch("https://vorlesungsplaner.herokuapp.com/kurs/" + kursId, {
             "method": "DELETE",
             "headers": {
                 "Authorization": "Bearer " + getCookie("token")
@@ -266,7 +298,7 @@ class Kurse extends React.Component{
                     error.className = "alert alert-danger";
                     error.id = "kurDelErr"
                     error.role = "alert";
-                    error.innerHTML = 'Kurs kann nicht gelöscht werden, bitte Semester entfernen';
+                    error.innerHTML = 'Kurs kann nicht gelöscht werden, bitte Semester entfernen.';
                     document.getElementById("mainKurse").insertBefore(error, document.getElementById("show"));
                 }
             }
@@ -279,7 +311,7 @@ class Kurse extends React.Component{
                     error.className = "alert alert-danger";
                     error.id = "kurDelErr"
                     error.role = "alert";
-                    error.innerHTML = 'Kurs kann nicht gelöscht werden, bitte Semester entfernen';
+                    error.innerHTML = 'Kurs kann nicht gelöscht werden, bitte Semester entfernen.';
                     document.getElementById("mainKurse").insertBefore(error, document.getElementById("show"));
                 }
             }
@@ -302,7 +334,7 @@ class Kurse extends React.Component{
             semRahmen.id = "semesterRahmen";
             // semRahmen.appendChild(document.createElement("hr"));
 
-            fetch("/semester/0", {
+            fetch("https://vorlesungsplaner.herokuapp.com/semester/0", {
                 "method": "GET",
                 "headers": {
                     "authorization": "Bearer " + getCookie("token")
@@ -325,7 +357,7 @@ class Kurse extends React.Component{
                         var semElement = document.createElement("div");
                         semElement.className = "semester";
                         //semElement.id = this.state.showSemester[i]["semId"];
-                        semElement.onclick = () => this.intoTermine(kursName, this.state.showSemester[i]["sem_bez"]); 
+                        semElement.onclick = () => this.intoTermine(kursName, this.state.showSemester[i]["semId"]); 
                         semElement.innerHTML = this.state.showSemester[i]["sem_bez"];
                         
                         var frameofSemester = document.createElement("div");
@@ -386,8 +418,9 @@ class Kurse extends React.Component{
     }
 
     deleteSemester(semId,kursId){
+        var errDiv = document.getElementById("semDelErr");
         var kurs = document.getElementById(kursId);
-        fetch("http://localhost:8080/semester/" + semId, {
+        fetch("https://vorlesungsplaner.herokuapp.com/semester/" + semId, {
             "method": "DELETE",
             "headers": {
                 "Authorization": "Bearer " + getCookie("token")
@@ -395,8 +428,22 @@ class Kurse extends React.Component{
         })
         .then(res => {
             if(res.ok){
+                if(errDiv){
+                    document.getElementById("mainKurse").removeChild(errDiv);
+                    
+                } 
                 kurs.click();
                 kurs.click();    
+            } else {
+                if(errDiv){
+                } else{
+                    var error = document.createElement("div");
+                    error.className = "alert alert-danger";
+                    error.id = "semDelErr"
+                    error.role = "alert";
+                    error.innerHTML = 'Semester kann nicht gelöscht werden, enthält Termine.';
+                    document.getElementById("mainKurse").insertBefore(error, document.getElementById("show"));
+                }
             }
         });
     }
@@ -406,15 +453,78 @@ class Kurse extends React.Component{
         document.getElementById("inputSemester").value = semName;
     }
 
-    lookupTermineSemester(kursId, semId){
-
+    lookupTermineSemester(event){
+        event.preventDefault();
+        const data = new FormData(event.target);
+        var object = {};
+        data.forEach(function(value, key){
+            object[key] = value;
+        });
         //Anfrage mit IDs ans Backend schicken, an "Termine" anhängen
 
+        fetch("https://vorlesungsplaner.herokuapp.com/termine/semid/" + object["semid"], {
+            "method": "GET",
+            "headers": {
+                "Authorization": "Bearer " + getCookie("token")
+            }
+        })
+        .then(dataWrappedByPromise => dataWrappedByPromise.json())
+        .then(res => {
+        
+            
+            this.setState({
+                lookupTermineSemester: res
+            });
+            if(document.getElementById("zitatTermine")){
+                document.getElementById("zitatTermine").parentNode.removeChild(document.getElementById("zitatTermine"));
+            }
+            
+            
+            //Startmonat der Termine festlegen
+            for (let i=0; i < this.state.lookupTermineSemester.length; i++){
+                var date = new Date(this.state.lookupTermineSemester[i]["terDatum"]);
+                if(this.state.date == undefined || this.state.date > date){
+                    this.state.date = date;
+                }
+                
+                
+            }
+            
+            var days = this.getDays(this.state.date.getMonth() + 1,this.state.date.getFullYear());
+            
+            var kalender = document.createElement("div");
+            kalender.id="kalender";
+            kalender.className="d-flex flex-wrap";
+            
+            // semElement.onclick = () => this.intoTermine(kursName, this.state.showSemester[i]["semId"]); 
+            for (let i=1; i <= days; i++){
+                var day = document.createElement("div");
+                day.className="day";
+                day.id=this.state.date;
+                day.innerHTML= i;//Datum
+                if(this.state.lookupTermineSemester[i]["terId"]){
+                    //Termin exisitert, Daten müssen eingetragen werden
+                    var termin = document.createElement("div");
+                    
+                } else {
+                    day.onclick = () => this.addTermin();
+                }
+                
+                if(this.state.lookupTermineSemester[i]["terDatum"] === this.state.lookupTermineSemester[i+1]["terDatum"]){
+                    
+                }
 
+                
+            }
+            document.getElementById("contentTermine").appendChild(kalender);
+        })
+        .catch(err => {
+        });
 
-        //Namen von kursId und semId aus Abfrage holen und in eingabe felder packen
-        // document.getElementById("inputKurs").value = 
-        // document.getElementById("inputSemester").value = 
+    }
+
+    getDays(month, year) {
+        return new Date(year, month, 0).getDate();
     }
     
 
@@ -472,16 +582,16 @@ class Kurse extends React.Component{
                           
                 </div>
                 
-                <div className="content" >
+                <div className="content" id="contentTermine" >
                     <h1 className="display-4">Termine</h1>
                     <hr></hr>
-                    <form>
+                    <form onSubmit={this.lookupTermineSemester}>
                         <div className="row">
                             <div className="col" id="searchKurs">
-                                <input type="text" className="form-control" name="kurs" placeholder="Kurs" id="inputKurs" />
+                                <input type="text" className="form-control" name="kurs" placeholder="Kurs" id="inputKurs" required/>
                             </div>
                             <div className="col" id="searchSemester">
-                                <input type="text" className="form-control" name="semester" placeholder="Semester" id="inputSemester" />
+                                <input type="text" className="form-control" name="semid" placeholder="ID" id="inputSemester" required/>
                                 <button type="submit" className="btn btn-primary mb-2" id="termine-search">
                                     <svg className="bi bi-search" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
@@ -492,7 +602,151 @@ class Kurse extends React.Component{
                             
                             
                         </div>
+                        
                     </form>
+                    <div id="zitatTermine">
+                        <cite>Auf das gewünschte Semester klicken, um ID zu erhalten</cite>
+                    </div>
+                    <div id="kalenderbar" class="d-flex justify-content-center">
+                        <svg class="bi bi-chevron-compact-left" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 01.223.67L6.56 8l2.888 5.776a.5.5 0 11-.894.448l-3-6a.5.5 0 010-.448l3-6a.5.5 0 01.67-.223z" clip-rule="evenodd"/>
+                        </svg>
+                        <h2 className="display-4" id="mon">April</h2>
+                        <svg class="bi bi-chevron-compact-right" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 01.671.223l3 6a.5.5 0 010 .448l-3 6a.5.5 0 11-.894-.448L9.44 8 6.553 2.224a.5.5 0 01.223-.671z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div id="kalender" class="d-flex flex-wrap">
+                        <div class="day">
+                            <div class="num">1</div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                        </div>
+                        <div class="day">
+                            <div class="num">2</div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                        </div>
+                        <div class="day">
+                            <div class="num">3</div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                            <div class="addTermin">
+                                <svg class="bi bi-plus-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="day">
+                            <div class="num">4</div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                        </div>
+                        <div class="day">
+                            <div class="num">5</div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                        </div>
+                        <div class="day">
+                            <div class="num">6</div>
+                            <div class="addTermin">
+                                <svg class="bi bi-plus-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="day">
+                            <div class="num">7</div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                        </div>
+                        <div class="day">
+                            <div class="num">8</div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                        </div>
+                        <div class="day" id="nextMon">
+                            <div class="num">1</div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                        </div>
+                        <div class="day" id="nextMon">
+                            <div class="num">2</div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                            <div class="termin">
+                                9:00 - 11:30<br/>
+                                Bumsen<br/>
+                                Prof. Dr. leckmichamArsch
+                            </div>
+                        </div>
+                    </div>
                    
                           
                 </div>

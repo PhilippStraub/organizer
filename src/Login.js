@@ -33,7 +33,7 @@ class Login extends React.Component {
     });
     var json = JSON.stringify(object);
 
-    fetch('/authenticate', {
+    fetch('https://vorlesungsplaner.herokuapp.com/authenticate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -74,6 +74,14 @@
     margin-bottom: 40px;
 }
 
+#semDelErr{
+    background-color: #E30013;
+    color: #ffffff;
+    border: none;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
 #searchKurs{
     padding-right: 0;
     margin-right: 4%;
@@ -208,6 +216,103 @@ cite{
     -webkit-transition: all 0.3s ease-in-out;
 }
 
+#zitatTermine{
+    margin-top: 8px;
+    text-align: center;
+}
+
+
+
+#kalenderbar{
+    text-align: center;
+    margin-top: 16px;
+}
+
+#mon{
+    font-size: 24px;
+}
+
+#kalenderbar svg{
+    margin-top: 4px;
+}
+
+#kalenderbar svg:hover{
+    -webkit-transform: scale(1.25,1.25);
+    -webkit-transition: all 0.3s ease-in-out;
+}
+
+#kalender{
+    border: solid 1px lightgray;
+    border-right: none;
+    border-radius: 3.5px;
+    margin-top: 16px;
+    margin-left: 9px;
+    margin-right: 9px;  
+}
+
+.day{
+    border-bottom: solid 1px lightgray;
+    border-right: solid 1px lightgray;
+    margin-right: 0px;
+    margin-bottom: -1px;
+    width: 20%;
+    height: auto;
+    padding: .375rem .75rem;
+}
+
+.num{
+    width: 30px;
+    height: 30px;
+    margin-bottom: 16px;
+    background-color: #5C6971;
+    color: #ffffff;
+    border: solid 1px #ffffff;
+    border-radius: 50%;
+    padding-top: 1px;
+    text-align: center;
+
+}
+
+
+.day:hover .num{
+    background-color: #E30013;
+}
+
+.termin{
+    background-color: #ffffff;
+    border: solid 1px lightgray;
+    border-radius: 3.5px;
+    margin-left: 15px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+    text-align: center;
+    padding: .275rem .75rem;
+}
+
+.termin:hover{
+    border-color: #E30013;
+}
+
+.addTermin{
+    text-align: center;
+}
+
+.addTermin .bi:hover{
+    -webkit-transform: scale(1.25,1.25);
+    -webkit-transition: all 0.3s ease-in-out;
+}
+
+
+#nextMon .termin{
+    background-color: lightgray;
+    border-color: lightgray;
+}
+
+#nextMon:hover .num{
+    background-color: lightgray;
+    border-color: #5C6971;
+    color: #5C6971;
+}
 
 @media (min-width: 1300px){
     #inputKurs{
@@ -224,7 +329,11 @@ cite{
     }
 }
 
-
+@media (max-width: 1200px) {
+    .day{
+        width: 33.333%;
+    }
+}
 @media (max-width: 600px) {
     #kurs{
         width: 100%;
@@ -254,5 +363,15 @@ cite{
         float: left;
     }
 
+    .day{
+        width: 100%;
+    }
     
+    .addTermin{
+        margin-bottom: 30px;
+    }
+    .num{
+        margin-top: 5px;
+    
+    }
   }

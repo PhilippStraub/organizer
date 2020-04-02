@@ -165,7 +165,7 @@ class Index extends React.Component{
         }
     }
     isAdmin(){
-        if(getCookie("user") == "admin"){
+        if(getCookie("user") == "Jany"){
             return true;
         } else{
             return false;
