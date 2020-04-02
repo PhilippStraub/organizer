@@ -78,6 +78,8 @@ class Kurse extends React.Component{
             if(res.ok){
                 document.getElementsByName('Kursform')[0].reset();
                 console.log("Kurs wurde erfolgreich angelegt.")
+                document.getElementById("show-header").click();
+                document.getElementById("show-header").click();
             }
         })
         .catch((err) => {
@@ -252,19 +254,36 @@ class Kurse extends React.Component{
             if(res.ok){
                 if(errDiv){
                     document.getElementById("mainKurse").removeChild(errDiv);
-                }        
+                    
+                    
+                }  
+                document.getElementById("show-header").click();
+                document.getElementById("show-header").click();      
+            } else {
+                if(errDiv){
+                } else{
+                    var error = document.createElement("div");
+                    error.className = "alert alert-danger";
+                    error.id = "kurDelErr"
+                    error.role = "alert";
+                    error.innerHTML = 'Kurs kann nicht gelöscht werden, bitte Semester entfernen';
+                    document.getElementById("mainKurse").insertBefore(error, document.getElementById("show"));
+                }
             }
         })
         .catch(err => {
-            if(errDiv){
-            } else{
-                var error = document.createElement("div");
-                error.className = "alert alert-danger";
-                error.id = "kurDelErr"
-                error.role = "alert";
-                error.innerHTML = 'Kurs kann nicht gelöscht werden, bitte Semester entfernen';
-                document.getElementById("mainKurse").insertBefore(error, document.getElementById("show"));
+            if(err){
+                if(errDiv){
+                } else{
+                    var error = document.createElement("div");
+                    error.className = "alert alert-danger";
+                    error.id = "kurDelErr"
+                    error.role = "alert";
+                    error.innerHTML = 'Kurs kann nicht gelöscht werden, bitte Semester entfernen';
+                    document.getElementById("mainKurse").insertBefore(error, document.getElementById("show"));
+                }
             }
+            
         });
         
         
@@ -316,7 +335,7 @@ class Kurse extends React.Component{
                         var trashElement = document.createElement("div");
                         trashElement.className = "trash";
                         trashElement.innerHTML = '<svg class="bi bi-trash2-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M2.037 3.225l1.684 10.104A2 2 0 005.694 15h4.612a2 2 0 001.973-1.671l1.684-10.104C13.627 4.224 11.085 5 8 5c-3.086 0-5.627-.776-5.963-1.775z"/><path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z" clip-rule="evenodd"/></svg>';
-                        trashElement.onclick = () => this.deleteSemester(this.state.showSemester[i]["semId"]);
+                        trashElement.onclick = () => this.deleteSemester(this.state.showSemester[i]["semId"],kursId);
 
                         var leftstatic = document.createElement("div");
                         leftstatic.className = "fuellelement";
@@ -366,11 +385,18 @@ class Kurse extends React.Component{
          
     }
 
-    deleteSemester(semId){
+    deleteSemester(semId,kursId){
+        var kurs = document.getElementById(kursId);
         fetch("http://localhost:8080/semester/" + semId, {
             "method": "DELETE",
             "headers": {
                 "Authorization": "Bearer " + getCookie("token")
+            }
+        })
+        .then(res => {
+            if(res.ok){
+                kurs.click();
+                kurs.click();    
             }
         });
     }

@@ -175,7 +175,7 @@ class Index extends React.Component{
     render() {
         if(this.isAuth()){
             //Authentiziert
-            if(this.isAdmin){
+            if(this.isAdmin()){
                 //Admin-Ansicht
                 return(
                     <div>
