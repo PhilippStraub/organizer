@@ -295,6 +295,7 @@ cite{
 
 .addTermin{
     text-align: center;
+    margin-bottom: 32px;
 }
 
 .addTermin .bi:hover{

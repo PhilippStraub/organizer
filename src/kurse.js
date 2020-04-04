@@ -38,6 +38,9 @@ class Kurse extends React.Component{
         this.deleteKurs = this.deleteKurs;
         this.deleteSemester = this.deleteSemester;
         this.getDays = this.getDays;
+        this.dateExistsTermin = this.dateExistsTermin;
+        this.addTermin = this.addTermin;
+        this.inspectTermin = this.inspectTermin;
         this.state = {
             showKurse: {
                 "kurId": "",
@@ -49,6 +52,20 @@ class Kurse extends React.Component{
                 "kurs": {
                 "kurId": "",
                 "kurBezeichnung": ""
+            },
+            terminPerMonth: {
+                0:[null],
+                1:[null],
+                2:[null],
+                3:[null],
+                4:[null],
+                5:[null],
+                6:[null],
+                7:[null],
+                8:[null],
+                9:[null],
+                10:[null],
+                11:[null]
             },
             lookupTermineSemester: {
                 "terId": "",
@@ -80,8 +97,9 @@ class Kurse extends React.Component{
                 }
             },
             date: undefined
+            
                 
-            }
+        }
         };
     }
     
@@ -478,45 +496,53 @@ class Kurse extends React.Component{
             if(document.getElementById("zitatTermine")){
                 document.getElementById("zitatTermine").parentNode.removeChild(document.getElementById("zitatTermine"));
             }
-            
-            
+
+            console.log("ydsfs");
+            // console.log(this.state.terminPerMonth[0].Title);
             //Startmonat der Termine festlegen
+            var ram = [];
             for (let i=0; i < this.state.lookupTermineSemester.length; i++){
                 var date = new Date(this.state.lookupTermineSemester[i]["terDatum"]);
+                console.log(date);
+                console.log(this.state.lookupTermineSemester[i]["terDatum"]);
+
+                /********
+                 * 
+                 * 
+                 * 
+                 * 
+                 */
+                // this.setState({
+                //     lookupTermineSemester:{
+                //         [i]: {
+                //             ["terDatum"]: date
+                //         }
+
+                //     }
+                // });
+                // this.state.lookupTermineSemester[i]["terDatum"] = date;
                 if(this.state.date == undefined || this.state.date > date){
                     this.state.date = date;
                 }
+                var month = date.getMonth();
                 
+                ram.push(this.state.lookupTermineSemester[i]);
                 
-            }
-            
-            var days = this.getDays(this.state.date.getMonth() + 1,this.state.date.getFullYear());
-            
-            var kalender = document.createElement("div");
-            kalender.id="kalender";
-            kalender.className="d-flex flex-wrap";
-            
-            // semElement.onclick = () => this.intoTermine(kursName, this.state.showSemester[i]["semId"]); 
-            for (let i=1; i <= days; i++){
-                var day = document.createElement("div");
-                day.className="day";
-                day.id=this.state.date;
-                day.innerHTML= i;//Datum
-                if(this.state.lookupTermineSemester[i]["terId"]){
-                    //Termin exisitert, Daten müssen eingetragen werden
-                    var termin = document.createElement("div");
-                    
-                } else {
-                    day.onclick = () => this.addTermin();
-                }
+                this.setState({
+                    terminPerMonth:{
+                        [month]: ram
+                    }
+                });
                 
-                if(this.state.lookupTermineSemester[i]["terDatum"] === this.state.lookupTermineSemester[i+1]["terDatum"]){
-                    
-                }
-
+                ram = this.state.terminPerMonth[month];  
                 
             }
-            document.getElementById("contentTermine").appendChild(kalender);
+            if(this.state.date == undefined){
+                var d = new Date();
+                this.state.date = d;
+            }
+            
+            this.getTermineMonth(this.state.date);            
         })
         .catch(err => {
         });
@@ -524,7 +550,260 @@ class Kurse extends React.Component{
     }
 
     getDays(month, year) {
-        return new Date(year, month, 0).getDate();
+        return new Date(year, month +1, 0).getDate();
+    }
+
+    getTermineMonth(date){
+        date.setDate(1);
+        var left= new Date(date);
+        left.setMonth(left.getMonth() - 1);
+        var right= new Date(date);
+        right.setMonth(right.getMonth() + 1);
+        var month = date.getMonth();
+        var year = date.getFullYear();
+        if(document.getElementById("kalenderbar")){
+            document.getElementById("contentTermine").removeChild(document.getElementById("kalenderbar"));
+            document.getElementById("contentTermine").removeChild(document.getElementById("kalender"));
+        }
+        var days = this.getDays(month, year);
+        var rest = days % 5;
+        if(rest != 0){
+            rest = 5 - rest;
+        }
+
+        var daysrest = rest + days;
+        console.log(days);
+        console.log(rest);
+        console.log(daysrest);
+
+        var monthArr = new Array();
+        monthArr[0] = "Januar";
+        monthArr[1] = "Februar";
+        monthArr[2] = "März";
+        monthArr[3] = "April";
+        monthArr[4] = "Mai";
+        monthArr[5] = "Juni";
+        monthArr[6] = "Juli";
+        monthArr[7] = "August";
+        monthArr[8] = "September";
+        monthArr[9] = "Oktober";
+        monthArr[10] = "November";
+        monthArr[11] = "Dezember";
+        var monthName = monthArr[month];
+        
+        var kalenderbar = document.createElement("div");
+        kalenderbar.id ="kalenderbar";
+        kalenderbar.className = "d-flex justify-content-center";
+        
+        var leftArrow = document.createElement("div");
+        leftArrow.onclick = () => this.getTermineMonth(left);
+        leftArrow.innerHTML = '<svg class="bi bi-chevron-compact-left" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 01.223.67L6.56 8l2.888 5.776a.5.5 0 11-.894.448l-3-6a.5.5 0 010-.448l3-6a.5.5 0 01.67-.223z" clip-rule="evenodd"/></svg>';
+        
+
+        var headline = document.createElement("h2");
+        headline.className = "display-4";
+        headline.id = "mon";
+        headline.innerHTML = monthName + " " + year;
+
+        var rightArrow = document.createElement("div");
+        rightArrow.onclick = () => this.getTermineMonth(right);
+        rightArrow.innerHTML = '<svg class="bi bi-chevron-compact-right" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 01.671.223l3 6a.5.5 0 010 .448l-3 6a.5.5 0 11-.894-.448L9.44 8 6.553 2.224a.5.5 0 01.223-.671z" clip-rule="evenodd"/></svg>';
+        
+
+        kalenderbar.appendChild(leftArrow);
+        kalenderbar.appendChild(headline);
+        kalenderbar.appendChild(rightArrow);
+        
+        document.getElementById("contentTermine").appendChild(kalenderbar);
+
+        //Kalender
+
+
+        var kalender = document.createElement("div");
+        kalender.id = "kalender";
+        kalender.className = "d-flex flex-wrap";
+        
+        var restnum = 1;
+        
+
+        for (let i=1; i<= daysrest; i++){
+            
+            if(i <= days){
+                
+                //Dieser Monat
+                var day = document.createElement("div");
+                day.className = "day";
+
+                day.innerHTML = '<div class="num">' + i +'</div>';
+                
+                var datum= new Date(date);
+                datum.setDate(i);
+
+                /*
+
+
+                */
+               console.log("ahahaha")
+                if(this.state.lookupTermineSemester.length != 0){
+                    //Es exisitieren Termine
+                    console.log("bruh")
+                    var termine = this.dateExistsTermin(datum,month);
+                    
+                    // console.log(date);
+                    // console.log(termine);
+                    if(termine[0] != undefined && termine[0] != null){ 
+                        console.log("erste");
+                        
+                        if(termine[1] == null){
+                            console.log("T+");
+                            //Plus und Termin erstellen
+                            var termin = document.createElement("div");
+                            termin.className = "termin";
+                            termin.onclick = () => this.inspectTermin(termine[0]);
+                            termin.innerHTML = termine[0]["terVonUhrzeit"] + ' - ' + termine[0]["terBisUhrzeit"] + '<br/>' +
+                                                termine[0]["vorlesungen"]["vorName"] + '<br/>' + termine[0]["vorlesungen"]["dozenten"]["dozNachname"];
+                            
+                            if(termine[0]["verfügbar"]){
+                                var haken = document.createElement("div");
+                                haken.innerHTML = '<svg class="bi bi-check" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/></svg>';
+                                termin.appendChild(haken);
+                            } else {
+                                var loading = document.createElement("div");
+                                loading.innerHTML = '<svg class="bi bi-arrow-repeat" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2.854 7.146a.5.5 0 00-.708 0l-2 2a.5.5 0 10.708.708L2.5 8.207l1.646 1.647a.5.5 0 00.708-.708l-2-2zm13-1a.5.5 0 00-.708 0L13.5 7.793l-1.646-1.647a.5.5 0 00-.708.708l2 2a.5.5 0 00.708 0l2-2a.5.5 0 000-.708z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M8 3a4.995 4.995 0 00-4.192 2.273.5.5 0 01-.837-.546A6 6 0 0114 8a.5.5 0 01-1.001 0 5 5 0 00-5-5zM2.5 7.5A.5.5 0 013 8a5 5 0 009.192 2.727.5.5 0 11.837.546A6 6 0 012 8a.5.5 0 01.501-.5z" clip-rule="evenodd"/></svg>';
+                                termin.appendChild(loading);
+                            }
+                            var plus = document.createElement("div");
+                            plus.className = "addTermin";
+                            plus.innerHTML = '<svg class="bi bi-plus-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/></svg>';
+                            plus.onclick = () => this.addTermin(datum);
+
+                            day.appendChild(termin);
+                            day.appendChild(plus);
+
+                        } else {
+                            //Beide Termine rein da
+                            //t1
+                            console.log("TT");
+                            
+                            var termin0 = document.createElement("div");
+                            termin0.className = "termin";
+                            termin0.onclick = () => this.inspectTermin(termine[0]);
+                            termin0.innerHTML = termine[0]["terVonUhrzeit"] + ' - ' + termine[0]["terBisUhrzeit"] + '<br/>' +
+                                                termine[0]["vorlesungen"]["vorName"] + '<br/>' + termine[0]["vorlesungen"]["dozenten"]["dozNachname"];
+                            console.log(termine[0]["verfügbar"]);
+                            if(termine[0]["verfügbar"]){
+                                var haken = document.createElement("div");
+                                haken.innerHTML = '<svg class="bi bi-check" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/></svg>';
+                                termin0.appendChild(haken);
+                            } else {
+                                var loading = document.createElement("div");
+                                loading.innerHTML = '<svg class="bi bi-arrow-repeat" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2.854 7.146a.5.5 0 00-.708 0l-2 2a.5.5 0 10.708.708L2.5 8.207l1.646 1.647a.5.5 0 00.708-.708l-2-2zm13-1a.5.5 0 00-.708 0L13.5 7.793l-1.646-1.647a.5.5 0 00-.708.708l2 2a.5.5 0 00.708 0l2-2a.5.5 0 000-.708z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M8 3a4.995 4.995 0 00-4.192 2.273.5.5 0 01-.837-.546A6 6 0 0114 8a.5.5 0 01-1.001 0 5 5 0 00-5-5zM2.5 7.5A.5.5 0 013 8a5 5 0 009.192 2.727.5.5 0 11.837.546A6 6 0 012 8a.5.5 0 01.501-.5z" clip-rule="evenodd"/></svg>';
+                                termin0.appendChild(loading);
+                            }
+                            console.log(termin0);
+                            //t2
+
+                            var termin1 = document.createElement("div");
+                            termin1.className = "termin";
+                            termin1.onclick = () => this.inspectTermin(termine[1]);
+                            termin1.innerHTML = termine[1]["terVonUhrzeit"] + ' - ' + termine[1]["terBisUhrzeit"] + '<br/>' +
+                                                termine[1]["vorlesungen"]["vorName"] + '<br/>' + termine[1]["vorlesungen"]["dozenten"]["dozNachname"];
+                            
+                            if(termine[1]["verfügbar"]){
+                                var haken = document.createElement("div");
+                                haken.innerHTML = '<svg class="bi bi-check" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/></svg>';
+                                termin1.appendChild(haken);
+                            } else {
+                                var loading = document.createElement("div");
+                                loading.innerHTML = '<svg class="bi bi-arrow-repeat" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2.854 7.146a.5.5 0 00-.708 0l-2 2a.5.5 0 10.708.708L2.5 8.207l1.646 1.647a.5.5 0 00.708-.708l-2-2zm13-1a.5.5 0 00-.708 0L13.5 7.793l-1.646-1.647a.5.5 0 00-.708.708l2 2a.5.5 0 00.708 0l2-2a.5.5 0 000-.708z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M8 3a4.995 4.995 0 00-4.192 2.273.5.5 0 01-.837-.546A6 6 0 0114 8a.5.5 0 01-1.001 0 5 5 0 00-5-5zM2.5 7.5A.5.5 0 013 8a5 5 0 009.192 2.727.5.5 0 11.837.546A6 6 0 012 8a.5.5 0 01.501-.5z" clip-rule="evenodd"/></svg>';
+                                termin1.appendChild(loading);
+                            }
+
+
+                            day.appendChild(termin0);
+                            day.appendChild(termin1);
+                        }
+                        
+                    }else {
+                        //Plus erstellen
+                        console.log("andere");
+                        var plus = document.createElement("div");
+                        plus.className = "addTermin";
+                        plus.innerHTML = '<svg class="bi bi-plus-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/></svg>';
+                        plus.onclick = () => this.addTermin(datum);
+
+                        day.appendChild(plus);
+                        
+                    }
+
+                } else {
+                    //Es exisitieren keine Termine
+                    console.log("yaa")
+                    var plus = document.createElement("div");
+                    plus.className = "addTermin";
+                    plus.innerHTML = '<svg class="bi bi-plus-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/></svg>';
+                    plus.onclick = () => this.addTermin(datum);
+
+                    day.appendChild(plus);
+                    
+                }
+                
+                
+                kalender.appendChild(day);
+                
+            } else {
+                //Nächster Mon
+                
+                var day = document.createElement("div");
+                day.className = "day";
+                day.id= "nextMon";
+                day.innerHTML = '<div class="num">' + restnum +'</div>';
+                kalender.appendChild(day);
+                restnum++;
+            }
+            
+
+        }
+
+
+        document.getElementById("contentTermine").appendChild(kalender);
+
+    }
+
+    dateExistsTermin(date,month){
+        var termine = [null, null];
+        
+        
+        if(this.state.terminPerMonth[month] != null){
+            
+            for(let i=0; i< this.state.terminPerMonth[month].length; i++){
+                var statedate = new Date(this.state.terminPerMonth[month][i]["terDatum"]);
+                if(statedate.getDate() == date.getDate()){
+                    if(termine[0] == null){
+                        termine[0] = this.state.terminPerMonth[month][i];
+                    } else {
+                        termine[1] = this.state.terminPerMonth[month][i];
+                    }
+                    
+                } else {
+
+                }
+            }
+            return termine;
+        } else {
+            //Keine Termine in diesem Monat
+            return [undefined, undefined];
+        }
+       
+        
+    }
+
+    addTermin(date){
+        //Popup öffnen
+    }
+
+    inspectTermin(termin){
+
     }
     
 
@@ -607,146 +886,7 @@ class Kurse extends React.Component{
                     <div id="zitatTermine">
                         <cite>Auf das gewünschte Semester klicken, um ID zu erhalten</cite>
                     </div>
-                    <div id="kalenderbar" class="d-flex justify-content-center">
-                        <svg class="bi bi-chevron-compact-left" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 01.223.67L6.56 8l2.888 5.776a.5.5 0 11-.894.448l-3-6a.5.5 0 010-.448l3-6a.5.5 0 01.67-.223z" clip-rule="evenodd"/>
-                        </svg>
-                        <h2 className="display-4" id="mon">April</h2>
-                        <svg class="bi bi-chevron-compact-right" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 01.671.223l3 6a.5.5 0 010 .448l-3 6a.5.5 0 11-.894-.448L9.44 8 6.553 2.224a.5.5 0 01.223-.671z" clip-rule="evenodd"/>
-                        </svg>
-                    </div>
-                    <div id="kalender" class="d-flex flex-wrap">
-                        <div class="day">
-                            <div class="num">1</div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                        </div>
-                        <div class="day">
-                            <div class="num">2</div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                        </div>
-                        <div class="day">
-                            <div class="num">3</div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                            <div class="addTermin">
-                                <svg class="bi bi-plus-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
-                                    <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>
-                                    <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="day">
-                            <div class="num">4</div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                        </div>
-                        <div class="day">
-                            <div class="num">5</div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                        </div>
-                        <div class="day">
-                            <div class="num">6</div>
-                            <div class="addTermin">
-                                <svg class="bi bi-plus-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
-                                    <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>
-                                    <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="day">
-                            <div class="num">7</div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                        </div>
-                        <div class="day">
-                            <div class="num">8</div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                        </div>
-                        <div class="day" id="nextMon">
-                            <div class="num">1</div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                        </div>
-                        <div class="day" id="nextMon">
-                            <div class="num">2</div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                            <div class="termin">
-                                9:00 - 11:30<br/>
-                                Bumsen<br/>
-                                Prof. Dr. leckmichamArsch
-                            </div>
-                        </div>
-                    </div>
+
                    
                           
                 </div>

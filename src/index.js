@@ -134,7 +134,6 @@ class Template extends React.Component{
                     </Switch>
                     </div>   
                 </Router>
-                
             </div>
 
          
@@ -165,7 +164,7 @@ class Index extends React.Component{
         }
     }
     isAdmin(){
-        if(getCookie("user") == "Jany"){
+        if(getCookie("user") == "Arnold@Schwarzenegger.com"){
             return true;
         } else{
             return false;
