@@ -39,7 +39,7 @@ class Kurse extends React.Component{
         this.deleteSemester = this.deleteSemester;
         this.getDays = this.getDays;
         this.dateExistsTermin = this.dateExistsTermin;
-        this.addTermin = this.addTermin;
+        this.addTermin = this.addTermin.bind(this);
         this.inspectTermin = this.inspectTermin;
         this.state = {
             showKurse: {
@@ -96,7 +96,11 @@ class Kurse extends React.Component{
                     }
                 }
             },
-            date: undefined
+            date: undefined,
+            addTerminData: {
+                "datum": "",
+                "semesterId": ""
+            }
             
                 
         }
@@ -420,7 +424,7 @@ class Kurse extends React.Component{
         //     for(var i =0; i< checks.length;i++){
         //         var check = checks[i];
         //         if(!check.disabled){
-        //             check.checked = false;
+        //             check.checked = false;this.state.date
         //         }
         //     }
         //     document.getElementById(kursId+"check").disabled= false;
@@ -496,7 +500,7 @@ class Kurse extends React.Component{
             if(document.getElementById("zitatTermine")){
                 document.getElementById("zitatTermine").parentNode.removeChild(document.getElementById("zitatTermine"));
             }
-
+            this.state.date = undefined;
             console.log("ydsfs");
             // console.log(this.state.terminPerMonth[0].Title);
             //Startmonat der Termine festlegen
@@ -542,7 +546,7 @@ class Kurse extends React.Component{
                 this.state.date = d;
             }
             
-            this.getTermineMonth(this.state.date);            
+            this.getTermineMonth(this.state.date, object["semid"]);            
         })
         .catch(err => {
         });
@@ -553,7 +557,7 @@ class Kurse extends React.Component{
         return new Date(year, month +1, 0).getDate();
     }
 
-    getTermineMonth(date){
+    getTermineMonth(date, semesterId){
         date.setDate(1);
         var left= new Date(date);
         left.setMonth(left.getMonth() - 1);
@@ -633,17 +637,22 @@ class Kurse extends React.Component{
                 //Dieser Monat
                 var day = document.createElement("div");
                 day.className = "day";
-
+                // day.id= semId;
                 day.innerHTML = '<div class="num">' + i +'</div>';
                 
                 var datum= new Date(date);
                 datum.setDate(i);
+                
 
+                //Create key value obj with date n semid
+                const objdata = { "datum": datum, "semesterId": semesterId };
+                
+                
                 /*
 
 
                 */
-               console.log("ahahaha")
+               
                 if(this.state.lookupTermineSemester.length != 0){
                     //Es exisitieren Termine
                     console.log("bruh")
@@ -675,7 +684,12 @@ class Kurse extends React.Component{
                             var plus = document.createElement("div");
                             plus.className = "addTermin";
                             plus.innerHTML = '<svg class="bi bi-plus-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/></svg>';
-                            plus.onclick = () => this.addTermin(datum);
+                            plus.onclick = () => this.setState({
+                                addTerminData:{
+                                    "datum": objdata["datum"],
+                                    "semesterId" : objdata["semesterId"]
+                                }
+                            });
 
                             day.appendChild(termin);
                             day.appendChild(plus);
@@ -730,8 +744,14 @@ class Kurse extends React.Component{
                         var plus = document.createElement("div");
                         plus.className = "addTermin";
                         plus.innerHTML = '<svg class="bi bi-plus-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/></svg>';
-                        plus.onclick = () => this.addTermin(datum);
-
+                        plus.onclick = () => this.setState({
+                            addTerminData:{
+                                "datum": objdata["datum"],
+                                "semesterId" : objdata["semesterId"]
+                            }
+                        });
+                        plus.setAttribute("data-toggle", "modal");
+                        plus.setAttribute("data-target", "#exampleModalCenter");
                         day.appendChild(plus);
                         
                     }
@@ -742,8 +762,16 @@ class Kurse extends React.Component{
                     var plus = document.createElement("div");
                     plus.className = "addTermin";
                     plus.innerHTML = '<svg class="bi bi-plus-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/></svg>';
-                    plus.onclick = () => this.addTermin(datum);
-
+                    plus.onclick = () => this.setState({
+                        addTerminData:{
+                            "datum": objdata["datum"],
+                            "semesterId" : objdata["semesterId"]
+                        }
+                    });
+                    plus.setAttribute("data-toggle", "modal");
+                    plus.setAttribute("data-target", "#exampleModalCenter");
+                    
+                    
                     day.appendChild(plus);
                     
                 }
@@ -798,16 +826,77 @@ class Kurse extends React.Component{
         
     }
 
-    addTermin(date){
-        //Popup öffnen
+    addTermin(event){
+        //Form von Pop-up auswerten und DAten an Backend schicken
+
+        event.preventDefault();
+        const data = new FormData(event.target);
+        var object = {};
+        data.forEach(function(value, key){
+            object[key] = value;
+        });
+        
+        console.log(object);
+        console.log(this.state.addTerminData);
+        console.log(this.state.addTerminData["semesterId"]);
+        console.log(this.state.addTerminData["datum"]);
+        var SemIdArray = {};
+        SemIdArray["semId"] = this.state.addTerminData["semesterId"];
+        var VorIdArray = {};
+        VorIdArray["vorId"] = object["vorId"];
+        var jsonArray = {};
+        jsonArray["terDatum"] = this.state.addTerminData["datum"];
+        jsonArray["terVonUhrzeit"] =  object["terVonUhrzeit"];
+        jsonArray["terBisUhrzeit"] =  object["terBisUhrzeit"];
+        jsonArray["raumNr"] = object["raumNr"];
+        jsonArray["verfügbar"] = "false";
+        jsonArray["semester"] =  SemIdArray;
+        jsonArray["vorlesungen"] =  VorIdArray;
+        var json = JSON.stringify(jsonArray)
+        console.log(json);
+
+        
+        fetch('https://vorlesungsplaner.herokuapp.com/termine', {
+            method: 'POST',
+            //   mode: 'no-cors',
+            //   cache: 'no-cache',
+            //   credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + getCookie("token")
+
+            },
+            body: json
+        })
+        .then(response => {
+        console.log(response);
+        })
+        .catch(err => {
+        console.log(err);
+        });
+
+
+
+
+            
+            
+        
+        
+        
+   
+        
+        //SemId aus Inputfeld holen
+
     }
 
     inspectTermin(termin){
+
 
     }
     
 
     render() {
+
 
 
         
@@ -871,7 +960,7 @@ class Kurse extends React.Component{
                             </div>
                             <div className="col" id="searchSemester">
                                 <input type="text" className="form-control" name="semid" placeholder="ID" id="inputSemester" required/>
-                                <button type="submit" className="btn btn-primary mb-2" id="termine-search">
+                                <button type="submit" className="btn btn-danger mb-2" id="termine-search">
                                     <svg className="bi bi-search" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
                                         <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"/>
@@ -887,8 +976,41 @@ class Kurse extends React.Component{
                         <cite>Auf das gewünschte Semester klicken, um ID zu erhalten</cite>
                     </div>
 
-                   
-                          
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    Launch demo modal
+                    </button>
+                    
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <form onSubmit={this.addTermin} id="addTermin" name="AddTerminform">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Neuen Termin erstellen</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        
+                                        <div class="input-group">
+                                            <input id="inputAddTerminVorlesung" type="text" className="form-control" name="vorId" placeholder="Id der Vorlesung" required /><br />
+                                            <input id="inputAddTerminRaum" type="text" className="form-control" name="raumNr" placeholder="Raum Nr." required />
+                                        </div>
+                                        <br />
+                                        <div class="input-group">
+                                            <input id="inputAddTerminBeginn" type="text" className="form-control" name="terVonUhrzeit" placeholder="Vorlesungsbeginn" required /><br />
+                                            <input id="inputAddTerminEnde" type="text" className="form-control" name="terBisUhrzeit" placeholder="Vorlesungsende" required />
+                                        </div>
+                      
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                                        <button type="button" class="btn btn-danger" type="submit">Erstellen</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
             </div>
