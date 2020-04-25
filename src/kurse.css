@@ -106,6 +106,7 @@
 }
 
 #termine-search{
+    margin-top: 0;
     margin-left: 4%;
     background-color: #E30013;
     border-color: #E30013;
@@ -312,6 +313,23 @@ cite{
 #nextMon:hover .num{
     background-color: lightgray;
     border-color: #5C6971;
+    color: #5C6971;
+}
+
+.modal{
+    text-align: left;
+}
+
+#modalDelete{
+    margin-right: 178px;
+}
+
+.modalReihe{
+    margin-bottom: 10px;
+}
+
+.modal p {
+    margin-bottom: 5px;
     color: #5C6971;
 }
 

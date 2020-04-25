@@ -2,6 +2,22 @@ import React from 'react';
 import './dozenten.css';
 import axios from 'axios';
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+}
+
 
 
 class Dozenten extends React.Component{
@@ -14,7 +30,8 @@ class Dozenten extends React.Component{
             "dozNachname": "",
             "dozMail": "",
             "dozTel": "",
-            "dozMobil": ""       
+            "dozMobil": "",
+                
         },
         fetchVorlesung: {
              "vorId": "",
@@ -39,7 +56,10 @@ class Dozenten extends React.Component{
        
       }
     fetchDozent() {
-        axios.get('http://localhost:8080/dozenten/0')
+        axios.get('https://vorlesungsplaner.herokuapp.com/dozenten/0', {
+            headers: {
+                "Authorization": "Bearer " + getCookie("token")
+            }})
         .then((response) => {
             // console.log("response", response);
             this.setState({
@@ -53,7 +73,10 @@ class Dozenten extends React.Component{
         });
     }
     fetchVorlesung() {
-        axios.get('http://localhost:8080/vorlesungen/0')
+        axios.get('https://vorlesungsplaner.herokuapp.com/vorlesungen/0', {
+            headers: {
+                "Authorization": "Bearer " + getCookie("token")
+            }})
         .then((response) => {
             // console.log("response", response);
             this.setState({
@@ -76,11 +99,12 @@ class Dozenten extends React.Component{
     });
     var json = JSON.stringify(object);
     alert(json);
-        fetch('http://localhost:8080/dozenten/',
+        fetch('https://vorlesungsplaner.herokuapp.com/dozenten/register',
         {  
             method: "POST",
             headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + getCookie("token")
           },
             body: json}
     
@@ -91,7 +115,7 @@ class Dozenten extends React.Component{
       .catch(function (error) {
         console.log(error);
       });
-      window.location.reload();
+      //window.location.reload();
      }
 
 
@@ -114,11 +138,12 @@ class Dozenten extends React.Component{
 
     // 
    
-        fetch('http://localhost:8080/vorlesungen/',
+        fetch('https://vorlesungsplaner.herokuapp.com/vorlesungen/',
         {  
             method: "POST",
             headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + getCookie("token")
           },
             body: json}
             
@@ -142,26 +167,32 @@ class Dozenten extends React.Component{
         // if (this.fetchDozent.length != 0){
         let dozData = [];
         for (let i=0; i < this.state.fetchDozent.length; i++){
-            dozData.push(<a key = {i} id={this.state.fetchDozent[i]["dozId"]} onClick={() =>document.getElementById("validationTooltip01").value = this.state.fetchDozent[i]["dozId"]} class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-between">
+            dozData.push(<a key = {i} id={this.state.fetchDozent[i]["dozId"]} onClick={() =>document.getElementById("validationTooltip01").value = this.state.fetchDozent[i]["dozId"]} className="list-group-item list-group-item-action flex-column align-items-start">
+            <div className="d-flex w-100 justify-content-between">
            
               
-              <h5 class="mb-1">{this.state.fetchDozent[i]["dozVorname"] +" "+this.state.fetchDozent[i]["dozNachname"] + " (ID: "+ this.state.fetchDozent[i]["dozId"]+")"}</h5>
-              
+              <h5 className="mb-1">{this.state.fetchDozent[i]["dozVorname"] +" "+this.state.fetchDozent[i]["dozNachname"] + " (ID: "+ this.state.fetchDozent[i]["dozId"]+")"}</h5>
+              <div className="trash2">
+              <svg class="bi bi-trash2-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M2.037 3.225l1.684 10.104A2 2 0 005.694 15h4.612a2 2 0 001.973-1.671l1.684-10.104C13.627 4.224 11.085 5 8 5c-3.086 0-5.627-.776-5.963-1.775z"/><path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z" clip-rule="evenodd"/></svg>
+          </div>
             </div>
-            <p class="mb-1">{this.state.fetchDozent[i]["dozMail"]}</p>
-            <p class="mb-1">{this.state.fetchDozent[i]["dozTel"]}</p>
-          </a>);  }  
+            <p className="mb-1">{this.state.fetchDozent[i]["dozMail"]}</p>
+            <p className="mb-1">{this.state.fetchDozent[i]["dozTel"]}</p>
+            
+          </a>
+         );  }  
         let vorData = [];
         for (let i=0; i < this.state.fetchVorlesung.length; i++){
-            vorData.push(<a key = {i} class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-between">
+            vorData.push(<a key = {i} className="list-group-item list-group-item-action flex-column align-items-start">
+            <div className="d-flex w-100 justify-content-between">
            
            
-              <h5 class="mb-1">{this.state.fetchVorlesung[i]["vorName"]}</h5>
-              
+              <h5 className="mb-1">{this.state.fetchVorlesung[i]["vorName"] + " (ID: "+ this.state.fetchVorlesung[i]["vorId"]+")"}</h5>
+              <div className="trash2">
+              <svg class="bi bi-trash2-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M2.037 3.225l1.684 10.104A2 2 0 005.694 15h4.612a2 2 0 001.973-1.671l1.684-10.104C13.627 4.224 11.085 5 8 5c-3.086 0-5.627-.776-5.963-1.775z"/><path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z" clip-rule="evenodd"/></svg>
+          </div>
             </div>
-            <p class="mb-1">{this.state.fetchVorlesung[i]["dozenten"]["dozVorname"] + " "+ this.state.fetchVorlesung[i]["dozenten"]["dozNachname"]}</p>
+            <p className="mb-1">{this.state.fetchVorlesung[i]["dozenten"]["dozVorname"] + " "+ this.state.fetchVorlesung[i]["dozenten"]["dozNachname"]}</p>
          
          </a>);
         
@@ -178,52 +209,52 @@ class Dozenten extends React.Component{
             
             <div>
                 <div className="content" id="neuerdozent">
-                <form class="needs-validation" onSubmit={this.fetchDozentPost} id="dozent">
+                <form className="needs-validation" onSubmit={this.fetchDozentPost} id="dozent">
                     
                     <h1 className="display-4">Neuer Dozent</h1>
                     <hr></hr>
-                    <div class="form-row">
-                        <div class="col-md-4 mb-3" id="col-md-4-mb-3">
-                            <input type="text" class="form-control" id="validationTooltip02" placeholder="Vorname" name="dozVorname" required></input>
+                    <div className="form-row">
+                        <div className="col-md-4 mb-3" id="col-md-4-mb-3">
+                            <input type="text" className="form-control" id="validationTooltip02" placeholder="Vorname" name="dozVorname" required></input>
                         </div>
-                        <div class="col-md-4 mb-3" id="col-md-4-mb-3">
-                            <input type="text" class="form-control" id="validationTooltip02" placeholder="Nachname" name="dozNachname" required></input>
+                        <div className="col-md-4 mb-3" id="col-md-4-mb-3">
+                            <input type="text" className="form-control" id="validationTooltip02" placeholder="Nachname" name="dozNachname" required></input>
                         </div>
-                        <div class="col-md-4 mb-3" id="col-md-4-mb-3">
-                            <input type="text" class="form-control" id="validationTooltip02" placeholder="Benutzername" ></input>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-4 mb-3" id="col-md-4-mb-3">
-                            <input type="text" class="form-control" id="validationTooltip02" placeholder="E-Mail" name="dozMail" required></input>
-                        </div>
-                        <div class="col-md-4 mb-3" id="col-md-4-mb-3">
-                            <input type="text" class="form-control" id="validationTooltip02" placeholder="Telefon" name="dozTel" required></input>
-                        </div>
-                        <div class="col-md-4 mb-3" id="col-md-4-mb-3">
-                            <input type="text" class="form-control" id="validationTooltip02" placeholder="Mobil" name="dozMobil" required></input>
+                        <div className="col-md-4 mb-3" id="col-md-4-mb-3">
+                            <input type="text" className="form-control" id="validationTooltip02" placeholder="Passwort" name="password" required ></input>
                         </div>
                     </div>
-                    <button class="btn btn-primary" id="anlegen" type="submit">Anlegen</button>
+                    <div className="form-row">
+                        <div className="col-md-4 mb-3" id="col-md-4-mb-3">
+                            <input type="text" className="form-control" id="validationTooltip02" placeholder="E-Mail" name="dozMail" required></input>
+                        </div>
+                        <div className="col-md-4 mb-3" id="col-md-4-mb-3">
+                            <input type="text" className="form-control" id="validationTooltip02" placeholder="Telefon" name="dozTel" required></input>
+                        </div>
+                        <div className="col-md-4 mb-3" id="col-md-4-mb-3">
+                            <input type="text" className="form-control" id="validationTooltip02" placeholder="Mobil" name="dozMobil" required></input>
+                        </div>
+                    </div>
+                    <button className="btn btn-danger" id="anlegen" type="submit">Anlegen</button>
                     </form>
                     </div>
             <div className="content" id="neuevorlesung">
-                <form class="needs-validation" enctype="application/json" onSubmit={this.fetchVorlesungPost} id="dozent">
+                <form className="needs-validation" encType="application/json" onSubmit={this.fetchVorlesungPost} id="dozent">
                     
                     <h1 className="display-4">Neue Vorlesung</h1>
                     <hr></hr>
-                    <div class="form-row">
-                        <div class="col-md-4 mb-3" id="col-md-4-mb-3">
-                            <input type="text" class="form-control" id="validationTooltip01" placeholder="ID des Dozenten" name="dozId" required></input>
+                    <div className="form-row">
+                        <div className="col-md-4 mb-3" id="col-md-4-mb-3">
+                            <input type="text" className="form-control" id="validationTooltip01" placeholder="ID des Dozenten" name="dozId" required></input>
                         </div>
-                        <div class="col-md-4 mb-3" id="col-md-4-mb-3">
-                            <input type="text" class="form-control" id="validationTooltip02" placeholder="Name der Vorlesung" name="vorName" required></input>
+                        <div className="col-md-4 mb-3" id="col-md-4-mb-3">
+                            <input type="text" className="form-control" id="validationTooltip02" placeholder="Name der Vorlesung" name="vorName" required></input>
                         </div>
                         
                     </div>
                    
                     <div id="anlegen">
-                    <button class="btn btn-primary" id="anlegen" type="submit">Anlegen</button></div>
+                    <button className="btn btn-danger" id="anlegen" type="submit">Anlegen</button></div>
                     </form>
                     </div>
                     <div className="content" id="dozsearch">
@@ -231,9 +262,9 @@ class Dozenten extends React.Component{
                         <h1 className="display-4" id="dozÜberschrift">Dozenten<h1 className="display-4" id="vorÜberschrift">Vorlesungen</h1></h1>
                         
                         <hr></hr>
-                        <div id="dozentenverzeichnis" class="list-group">{dozData}
+                        <div id="dozentenverzeichnis" className="list-group">{dozData}
                                 </div>
-                        <div id="vorlesungverzeichnis" class="list-group">{vorData}
+                        <div id="vorlesungverzeichnis" className="list-group">{vorData}
                                 </div>
                     </div>
                 </div>
