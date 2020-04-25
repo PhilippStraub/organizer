@@ -316,6 +316,14 @@ cite{
     color: #5C6971;
 }
 
+.modal{
+    text-align: left;
+}
+
+#modalDelete{
+    margin-right: 178px;
+}
+
 @media (min-width: 1300px){
     #inputKurs{
         width: 50%;
