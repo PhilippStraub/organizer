@@ -138,8 +138,6 @@ class Kurse extends React.Component{
         
     }
 
-    
-
     handleSubmitSemester(event){
         event.preventDefault();
         const data = new FormData(event.target);

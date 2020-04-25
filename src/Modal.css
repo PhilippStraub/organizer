@@ -1,0 +1,30 @@
+#userbutton {
+    background: transparent;
+    border: none;
+    color: transparent;
+    margin-right: 7px;
+}
+
+#passworändern_btn, #neueEmailBestätigen_btn{
+    margin: 15px;
+}
+
+#inputgroop_changepw, #inputgroop_changeemail, #changetel, #changename{
+    margin: 10px;
+
+}
+#changetel, #changename {
+   align-self: center;
+}
+
+#inputgroop_changeemail, #inputgroop_changepw{
+    
+ margin: 14px;
+ width: 94%;
+}
+
+
+
+
+
+

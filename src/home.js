@@ -1,6 +1,8 @@
 import React from 'react';
 import './home.css';
 import Kurse from './kurse';
+import Test from './Modal';
+import ChangePwModal from "./Modal";
 
 
 class Home extends React.Component{
@@ -11,6 +13,7 @@ class Home extends React.Component{
     render() {
         return(
             <div>
+                <Test/>
                 <Kurse />
                 <div className="content" id="dozenten">
                     <a>
