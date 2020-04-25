@@ -933,18 +933,21 @@ class Kurse extends React.Component{
         "body": json
         })
         .then(response => {
-        console.log(response);
+            if(response.ok){
+                document.getElementById("exampleModalCenterClose").click();
+                document.getElementById("inputAddTerminVorlesung").value = "";
+                document.getElementById("inputAddTerminRaum").value = "";
+                document.getElementById("inputAddTerminBeginn").value = "";
+                document.getElementById("inputAddTerminEnde").value = "";
+                document.getElementById("termine-search").click();
+            }
+
         })
         .catch(err => {
         console.log(err);
         });
 
-        document.getElementById("exampleModalCenterClose").click();
-        document.getElementById("inputAddTerminVorlesung").value = "";
-        document.getElementById("inputAddTerminRaum").value = "";
-        document.getElementById("inputAddTerminBeginn").value = "";
-        document.getElementById("inputAddTerminEnde").value = "";
-        document.getElementById("termine-search").click();
+        
 
     }
 
@@ -1107,9 +1110,6 @@ class Kurse extends React.Component{
                     </form>
                     <div id="zitatTermine">
                         <cite>Auf das gewünschte Semester klicken, um ID zu erhalten</cite>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#viewModalCenter">
-                         Launch demo modal
-                        </button>
                     </div>
  
                     
@@ -1151,33 +1151,46 @@ class Kurse extends React.Component{
                             <form onSubmit={this.patchTermin} id="addTermin" name="AddTerminform">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="viewModalLongTitle">Termin bearbeiten</h5>
-                                    
                                     <button type="button" class="close" id="viewModalCenterClose" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>
                                     
                                 </div>
                                 <div class="modal-body">
-                                    Datum                                
-                                    <input type="text" class="form-control" id="inputViewTerminDatum" name="terDatum" placeholder="Datum"/>
-                                    Dozent                                
-                                    <input id="inputViewTerminDozent" type="text" className="form-control" name="dozNachname" placeholder="Dozent" required />
-                                    Vorlesung
-                                    <div class="input-group">
-                                        
-                                        <input id="inputViewTerminVorlesung" type="text" readonly className="form-control-plaintext" name="vorName" placeholder="Vorlesung" required /><br />
-                                        <input id="inputViewTerminVorlesungId" type="text" className="form-control" name="vorId" placeholder="Id" required />
-                                        
+                                    <div className="modalReihe">
+                                        <p>Datum</p>                        
+                                        <input type="text" class="form-control" id="inputViewTerminDatum" name="terDatum" placeholder="Datum"/>
                                     </div>
-                                    Raum
-                                    <input id="inputViewTerminRaum" type="text" className="form-control" name="raumNr" placeholder="Raum Nr." required />
+                                    <div className="modalReihe">
+                                        <p>Dozent</p>                          
+                                        <input id="inputViewTerminDozent" type="text" readonly className="form-control-plaintext" name="dozNachname" placeholder="Dozent" required />
+                                    </div>
+                                    <div className="modalReihe">
+                                        <p>Vorlesung</p>
+                                        <div class="input-group">
+                                            
+                                            <input id="inputViewTerminVorlesung" type="text" readonly className="form-control-plaintext" name="vorName" placeholder="Vorlesung" required /><br />
+                                            <input id="inputViewTerminVorlesungId" type="text" className="form-control" name="vorId" placeholder="Id" required />
+                                            
+                                        </div>
+                                    </div>
+                                    <div className="modalReihe">
+                                        <p>Raum</p>
+                                        <input id="inputViewTerminRaum" type="text" className="form-control" name="raumNr" placeholder="Raum Nr." required />
+                                    </div>
+                                    <div className="modalReihe">
+                                        <p>Zeitspanne</p>
+                                        <div class="input-group">
+                                        
+                                            <input id="inputViewTerminBeginn" type="text" className="form-control" name="terVonUhrzeit" placeholder="Vorlesungsbeginn (hh:mm:ss)" required /><br />
+                                            <input id="inputViewTerminEnde" type="text" className="form-control" name="terBisUhrzeit" placeholder="Vorlesungsende (hh:mm:ss)" required />
+                                        </div>
+                                    </div>
+                                    
+                                   
                                 
-                                    Zeitspanne
-                                    <div class="input-group">
-                                        
-                                        <input id="inputViewTerminBeginn" type="text" className="form-control" name="terVonUhrzeit" placeholder="Vorlesungsbeginn (hh:mm:ss)" required /><br />
-                                        <input id="inputViewTerminEnde" type="text" className="form-control" name="terBisUhrzeit" placeholder="Vorlesungsende (hh:mm:ss)" required />
-                                    </div>
+                                    
+                                    
                     
                                 </div>
                                 <div class="modal-footer">

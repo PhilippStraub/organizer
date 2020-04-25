@@ -324,6 +324,15 @@ cite{
     margin-right: 178px;
 }
 
+.modalReihe{
+    margin-bottom: 10px;
+}
+
+.modal p {
+    margin-bottom: 5px;
+    color: #5C6971;
+}
+
 @media (min-width: 1300px){
     #inputKurs{
         width: 50%;
