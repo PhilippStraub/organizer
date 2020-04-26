@@ -1,8 +1,7 @@
 import React from "react";
 import './Modal.css';
 import './kurse.css'
-import eyeslash from './data/eye-slash-regular.svg';
-import eye from './data/eye-solid.svg';
+
 
 
 function getCookie(cname) {
@@ -71,9 +70,8 @@ class ChangePwModal  extends React.Component{
                                     <input type="tel" class="form-control" placeholder="Mobil"></input>
                                     </div>
                             </div>
-
-                                <button className="btn btn-primary" type="button"
-                                                id="neueEmailBestätigen_btn"> Pesönliche Daten Änderm
+                                <button className="btn btn-danger d-flex justify-content-center" type="button" id="modalbuttonsredpd"
+                                                > Pesönliche Daten Änderm
                                         </button>
 
                                 <div className="input-group" id="inputgroop_changepw">
@@ -85,7 +83,7 @@ class ChangePwModal  extends React.Component{
                                     <input type="password" className="form-control" id="neuesPwBestätigen"
                                            placeholder="Neues Password Bestätigen"></input>
                                 </div>
-                                <button type="button" className="btn btn-primary" id="passworändern_btn">Password ändern</button>
+                                <button type="button" className="btn btn-danger d-flex justify-content-center" id="modalbuttonsredpw">Password ändern</button>
                             
                             </form>
                         </div>

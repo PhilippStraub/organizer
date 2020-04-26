@@ -1,12 +1,14 @@
 #userbutton {
+    /*Der Knopf Männchen*/
     background: transparent;
     border: none;
     color: transparent;
     margin-right: 7px;
 }
 
-#passworändern_btn, #neueEmailBestätigen_btn{
-    margin: 15px;
+#modalbuttonsredpd, #modalbuttonsredpw{
+    margin-top: 15px;
+    margin: 0 auto;
 }
 
 #inputgroop_changepw, #inputgroop_changeemail, #changetel, #changename{
@@ -18,7 +20,7 @@
 }
 
 #inputgroop_changeemail, #inputgroop_changepw{
-    
+
  margin: 14px;
  width: 94%;
 }
