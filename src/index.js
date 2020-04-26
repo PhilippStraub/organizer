@@ -4,11 +4,11 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-ro
 import './index.css';
 import user from './data/person.svg';
 import logout from './data/logout.svg';
-import '../node_modules/font-awesome/css/font-awesome.min.css';
 import Login from './Login';
 import Home from './home';
 import Kurse from './kurse';
 import Dozenten from './dozenten';
+import ChangePwModal from './Modal';
 import * as serviceWorker from './serviceWorker';
 
 function getCookie(cname) {
@@ -116,10 +116,12 @@ class Template extends React.Component{
                                     <Route exact path='/dozenten' component={NavItemsDozenten} />
                                 </Switch>
                             </div>
+
                             <div id="user">
                                 <button id="userbutton" data-toggle="modal" data-target="#ChangePwModal">
                                     <img src={user} id="usericon" alt="" />
                                 </button>
+                            
                                 {getCookie("user")}
                                 <img src={logout} id="logout" alt="logout" onClick={this.logoutUser} />
                             </div>
@@ -137,6 +139,7 @@ class Template extends React.Component{
                         <Route path='/dozenten' component={Dozenten} />
                     </Switch>
                     </div>
+                    <ChangePwModal />
                 </Router>
 
             </div>
@@ -196,6 +199,7 @@ class Index extends React.Component{
             } else {
                 //Dozentenansicht
 
+                //Modal von Felix zum Pw ändern nicht vergessen bei Dozententemplate
 
             }
         } else {
