@@ -292,16 +292,16 @@ class Dozenten extends React.Component{
                     <button className="btn btn-danger" id="anlegen" type="submit">Anlegen</button>
                     </form>
                     </div>
-            <div className="content" id="neuevorlesung">
+            <div className="content">
                 <form className="needs-validation" encType="application/json" onSubmit={this.fetchVorlesungPost} id="dozent">
-                    
+                    <br></br>
                     <h1 className="display-4">Neue Vorlesung</h1>
                     <hr></hr>
-                    <div className="form-row">
-                        <div className="col-md-4 mb-3" id="col-md-4-mb-3">
+                    <div className="form-row" id="form-row2">
+                        <div className="col" id="col-md-4-mb-3">
                             <input type="text" className="form-control" id="validationTooltip01" placeholder="ID des Dozenten" name="dozId" required></input>
                         </div>
-                        <div className="col-md-4 mb-3" id="col-md-4-mb-3">
+                        <div className="col" id="col-md-4-mb-3">
                             <input type="text" className="form-control" id="validationTooltip02" placeholder="Name der Vorlesung" name="vorName" required></input>
                         </div>
                         
@@ -311,13 +311,19 @@ class Dozenten extends React.Component{
                     <button className="btn btn-danger" id="anlegen" type="submit">Anlegen</button></div>
                     </form>
                     </div>
-                    <div className="content" id="dozsearch">
+                    <div className="content">
                         <br></br>
-                        <h1 className="display-4" id="dozÜberschrift">Dozenten<h1 className="display-4" id="vorÜberschrift">Vorlesungen</h1></h1>
+                        <h1 className="display-4" id="dozÜberschrift">Dozenten</h1>
                         
                         <hr></hr>
                         <div id="dozentenverzeichnis" className="list-group">{dozData}
                                 </div>
+                        </div>
+                    <div className="contentEnde">
+                        <br></br>
+                        <h1 className="display-4" id="dozÜberschrift">Vorlesungen</h1>
+                        
+                        <hr></hr>
                         <div id="vorlesungverzeichnis" className="list-group">{vorData}
                                 </div>
                     </div>
