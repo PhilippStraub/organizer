@@ -13,8 +13,7 @@ class Home extends React.Component{
     render() {
         return(
             <div>
-                <Test/>
-                <Kurse />
+                
                 <div className="content" id="dozenten">
                     <a>
                         <h1 className="display-4">Dozenten</h1>
