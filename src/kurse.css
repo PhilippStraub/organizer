@@ -31,6 +31,10 @@
     margin-top: 0;
 }
 
+#contentTermine{
+    margin-bottom: 5vh;
+}
+
 #kurs{
     margin-top: 40px;
     width: 48%;
@@ -349,8 +353,14 @@ cite{
 }
 
 @media (max-width: 1200px) {
-    .day{
+    /*.day{
         width: 33.333%;
+    }*/
+    .day{
+        width: 100%;
+    }
+    #nextMon{
+        display: none;
     }
 }
 @media (max-width: 600px) {
@@ -392,5 +402,13 @@ cite{
     .num{
         margin-top: 5px;
     
+    }
+
+    #nextMon{
+        display: none;
+    }
+
+    #user{
+        font-size: 0px;
     }
   }

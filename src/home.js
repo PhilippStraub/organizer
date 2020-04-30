@@ -1,8 +1,21 @@
 import React from 'react';
 import './home.css';
-import Kurse from './kurse';
-import Test from './Modal';
-import ChangePwModal from "./Modal";
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+}
 
 
 class Home extends React.Component{
@@ -13,8 +26,7 @@ class Home extends React.Component{
     render() {
         return(
             <div>
-                <Test/>
-                <Kurse />
+                
                 <div className="content" id="dozenten">
                     <a>
                         <h1 className="display-4">Dozenten</h1>
@@ -41,4 +53,28 @@ class Home extends React.Component{
 }
 
 
-export default Home;
+class HomeUser extends React.Component{
+    render() {
+        return(
+            <div id="begruessung">
+                 <div className="content" id="begruessung2">
+                    <a>
+                        <h1 className="display-4">Willkommen {getCookie("user")}!</h1>
+                        <hr></hr>
+                    </a>
+                
+                            
+                </div>
+                
+            </div>
+        );
+    }
+
+}
+
+class Termine extends React.Component{
+
+}
+
+
+export { Home, HomeUser };
