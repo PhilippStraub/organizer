@@ -20,25 +20,43 @@ function getCookie(cname) {
     return "";
 }
 
-function pwchange200() {
-    alert('Das Passwort wurde erfolgreich geändert.');
+function getDozByMail(mail){
+    fetch("https://vorlesungsplaner.herokuapp.com/dozenten/0", {
+    "method": "GET",
+    "headers": {
+        "authorization": "Bearer" + getCookie("token")
+    }
+    })
+    .then(response => {
+    console.log(response);
+    })
+    .catch(err => {
+    console.log(err);
+    error(1)
+    });
 }
 
-function pwchangeerror() {
-    alert('Es ist ein Fehler aufgetreten! Bitte versuchen Sie es erneut.');
+function error(errorcode){
+    switch (errorcode){
+        case 1:
+            alert('Es ist ein Fehler aufgetreten! Bitte versuchen Sie es erneut.');
+        break;
+
+        case 2:
+            alert('Das Passwort wurde erfolgreich geändert.');
+        break;
+
+        case 3:
+            alert('Die Nutzer Details wurden erfolgreich geändert');
+        break;
+    }
 }
-
-function userdetailschange200() {
-    alert('Die Nutzer Details wurden erfolgreich geändert');
-}
-
-
 
 class ChangePwModal  extends React.Component{
     render() {
         return(
             <div className="modal fade bd-example-modal-lg" id="ChangePwModal" tabIndex="-1" role="dialog"
-                 aria-labelledby="exampleModalLabel" aria-hidden="false">
+                 aria-labelledby="exampleModalLabel" aria-hidden="false" onload='getDozByMail({getCookie("user")})'>
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
