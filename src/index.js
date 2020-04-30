@@ -9,6 +9,7 @@ import { Home, HomeUser } from './home';
 import Kurse from './kurse';
 import Dozenten from './dozenten';
 import ChangePwModal from './Modal';
+import Termine from './termine'
 
 
 function getCookie(cname) {
@@ -231,7 +232,7 @@ class TemplateUser extends React.Component{
                     <div id="anchor">
                     <Switch>
                         <Route exact path='/' component={HomeUser} />
-                        <Route path='/termine' component={Kurse} />
+                        <Route path='/termine' component={Termine} />
                     </Switch>
                     </div>
                     <ChangePwModal />
@@ -267,7 +268,7 @@ class Index extends React.Component{
         }
     }
     isAdmin(){
-        if(getCookie("user") == "Arnold@Schwarzenegger.com"){
+        if(getCookie("user") == "rnold@Schwarzenegger.com"){
             return true;
         } else{
             return false;
