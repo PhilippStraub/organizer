@@ -52,7 +52,6 @@ function error(errorcode){
     }
 }
 
-
 class ChangePwModal  extends React.Component{
     render() {
         return(

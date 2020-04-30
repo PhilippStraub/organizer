@@ -173,6 +173,8 @@ class Kurse extends React.Component{
         
     }
 
+    
+
     handleSubmitSemester(event){
         event.preventDefault();
         const data = new FormData(event.target);
@@ -530,44 +532,31 @@ class Kurse extends React.Component{
                 document.getElementById("zitatTermine").parentNode.removeChild(document.getElementById("zitatTermine"));
             }
             this.state.date = undefined;
-            console.log("ydsfs");
-            // console.log(this.state.terminPerMonth[0].Title);
-            //Startmonat der Termine festlegen
-            var ram = [];
+
+            this.setState({
+                terminPerMonth: [[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11]]
+            });
             for (let i=0; i < this.state.lookupTermineSemester.length; i++){
-                var date = new Date(this.state.lookupTermineSemester[i]["terDatum"]);
-                console.log(date);
-                console.log(this.state.lookupTermineSemester[i]["terDatum"]);
+                var datum = new Date(this.state.lookupTermineSemester[i]["terDatum"]);
 
-                /********
-                 * 
-                 * 
-                 * 
-                 * 
-                 */
-                // this.setState({
-                //     lookupTermineSemester:{
-                //         [i]: {
-                //             ["terDatum"]: date
-                //         }
-
-                //     }
-                // });
-                // this.state.lookupTermineSemester[i]["terDatum"] = date;
-                if(this.state.date == undefined || this.state.date > date){
-                    this.state.date = date;
+                if(this.state.date == undefined || this.state.date > datum){
+                    this.setState({
+                        date: datum
+                    });
                 }
-                var month = date.getMonth();
-                
-                ram.push(this.state.lookupTermineSemester[i]);
-                
+                var month = datum.getMonth();
+
+
+
+                var altTerminPerMoth = [[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11]];
+                if(this.state.terminPerMonth){
+                    altTerminPerMoth = this.state.terminPerMonth;
+                }
+                altTerminPerMoth[month].push(this.state.lookupTermineSemester[i])
                 this.setState({
-                    terminPerMonth:{
-                        [month]: ram
-                    }
+                    terminPerMonth: altTerminPerMoth
                 });
-                
-                ram = this.state.terminPerMonth[month];  
+
                 
             }
             if(this.state.date == undefined){
@@ -578,6 +567,7 @@ class Kurse extends React.Component{
             this.getTermineMonth(this.state.date, object["semid"]);            
         })
         .catch(err => {
+            console.log(err);
         });
 
     }
@@ -605,9 +595,6 @@ class Kurse extends React.Component{
         }
 
         var daysrest = rest + days;
-        console.log(days);
-        console.log(rest);
-        console.log(daysrest);
 
         var monthArr = new Array();
         monthArr[0] = "Januar";
@@ -629,7 +616,7 @@ class Kurse extends React.Component{
         kalenderbar.className = "d-flex justify-content-center";
         
         var leftArrow = document.createElement("div");
-        leftArrow.onclick = () => this.getTermineMonth(left);
+        leftArrow.onclick = () => this.getTermineMonth(left, semesterId);
         leftArrow.innerHTML = '<svg class="bi bi-chevron-compact-left" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 01.223.67L6.56 8l2.888 5.776a.5.5 0 11-.894.448l-3-6a.5.5 0 010-.448l3-6a.5.5 0 01.67-.223z" clip-rule="evenodd"/></svg>';
         
 
@@ -639,7 +626,7 @@ class Kurse extends React.Component{
         headline.innerHTML = monthName + " " + year;
 
         var rightArrow = document.createElement("div");
-        rightArrow.onclick = () => this.getTermineMonth(right);
+        rightArrow.onclick = () => this.getTermineMonth(right, semesterId);
         rightArrow.innerHTML = '<svg class="bi bi-chevron-compact-right" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 01.671.223l3 6a.5.5 0 010 .448l-3 6a.5.5 0 11-.894-.448L9.44 8 6.553 2.224a.5.5 0 01.223-.671z" clip-rule="evenodd"/></svg>';
         
 
@@ -684,16 +671,12 @@ class Kurse extends React.Component{
                
                 if(this.state.lookupTermineSemester.length != 0){
                     //Es exisitieren Termine
-                    console.log("bruh")
+
                     var termine = this.dateExistsTermin(datum,month);
                     
-                    // console.log(date);
-                    // console.log(termine);
                     if(termine[0] != undefined && termine[0] != null){ 
-                        console.log("erste");
                         
                         if(termine[1] == null){
-                            console.log("T+");
                             //Plus und Termin erstellen
                             var termin = document.createElement("div");
                             termin.className = "termin";
@@ -742,7 +725,22 @@ class Kurse extends React.Component{
                         } else {
                             //Beide Termine rein da
                             //t1
-                            console.log("TT");
+
+                            //Termine in zeitliche Reihenfolge bringen auf Stundenbasis
+                            var str0 = termine[0]["terVonUhrzeit"];
+                            str0 = str0.slice(0, -6);
+                            str0 = parseInt(str0);
+                            var str1 = termine[1]["terVonUhrzeit"];
+                            str1 = str1.slice(0, -6);
+                            str1 = parseInt(str1);
+                            if(str0<str1){
+                            } else if(str1<str0) {
+                                //termin 1 muss index 0 werden
+                                var ramTermine = termine[0];
+                                termine[0] = termine[1];
+                                termine[1] = ramTermine;
+                            }
+
                             
                             var termin0 = document.createElement("div");
                             termin0.className = "termin";
@@ -760,7 +758,7 @@ class Kurse extends React.Component{
                                                 termine[0]["vorlesungen"]["vorName"] + '<br/>' + termine[0]["vorlesungen"]["dozenten"]["dozNachname"];
                             termin0.setAttribute("data-toggle", "modal");
                             termin0.setAttribute("data-target", "#viewModalCenter");
-                            console.log(termine[0]["verfügbar"]);
+
                             if(termine[0]["verfügbar"]){
                                 var haken = document.createElement("div");
                                 haken.innerHTML = '<svg class="bi bi-check" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/></svg>';
@@ -770,7 +768,7 @@ class Kurse extends React.Component{
                                 loading.innerHTML = '<svg class="bi bi-arrow-repeat" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2.854 7.146a.5.5 0 00-.708 0l-2 2a.5.5 0 10.708.708L2.5 8.207l1.646 1.647a.5.5 0 00.708-.708l-2-2zm13-1a.5.5 0 00-.708 0L13.5 7.793l-1.646-1.647a.5.5 0 00-.708.708l2 2a.5.5 0 00.708 0l2-2a.5.5 0 000-.708z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M8 3a4.995 4.995 0 00-4.192 2.273.5.5 0 01-.837-.546A6 6 0 0114 8a.5.5 0 01-1.001 0 5 5 0 00-5-5zM2.5 7.5A.5.5 0 013 8a5 5 0 009.192 2.727.5.5 0 11.837.546A6 6 0 012 8a.5.5 0 01.501-.5z" clip-rule="evenodd"/></svg>';
                                 termin0.appendChild(loading);
                             }
-                            console.log(termin0);
+
                             //t2
 
                             var termin1 = document.createElement("div");
@@ -806,7 +804,6 @@ class Kurse extends React.Component{
                         
                     }else {
                         //Plus erstellen
-                        console.log("andere");
                         var plus = document.createElement("div");
                         plus.className = "addTermin";
                         plus.innerHTML = '<svg class="bi bi-plus-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/></svg>';
@@ -824,7 +821,6 @@ class Kurse extends React.Component{
 
                 } else {
                     //Es exisitieren keine Termine
-                    console.log("yaa")
                     var plus = document.createElement("div");
                     plus.className = "addTermin";
                     plus.innerHTML = '<svg class="bi bi-plus-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/></svg>';
@@ -901,11 +897,7 @@ class Kurse extends React.Component{
         data.forEach(function(value, key){
             object[key] = value;
         });
-        
-        console.log(object);
-        console.log(this.state.addTerminData);
-        console.log(this.state.addTerminData["semesterId"]);
-        console.log(this.state.addTerminData["datum"]);
+
         var SemIdArray = {};
         SemIdArray["semId"] = this.state.addTerminData["semesterId"];
         var VorIdArray = {};
@@ -919,8 +911,6 @@ class Kurse extends React.Component{
         jsonArray["semester"] =  SemIdArray;
         jsonArray["vorlesungen"] =  VorIdArray;
         var json = JSON.stringify(jsonArray)
-        console.log(json);
-
         
         fetch("https://vorlesungsplaner.herokuapp.com/termine", {
             "method": "POST",
@@ -942,7 +932,7 @@ class Kurse extends React.Component{
 
         })
         .catch(err => {
-        console.log(err);
+            console.log(err);
         });
 
         
@@ -965,7 +955,6 @@ class Kurse extends React.Component{
 
     patchTermin(event){
         var termin = this.state.terminForInspect;
-        console.log(termin);
         event.preventDefault();
         const data = new FormData(event.target);
         var object = {};
@@ -987,7 +976,6 @@ class Kurse extends React.Component{
         jsonArray["semester"] =  SemIdArray;
         jsonArray["vorlesungen"] =  VorIdArray;
         var json = JSON.stringify(jsonArray)
-        console.log(json);
 
         fetch("https://vorlesungsplaner.herokuapp.com/termine/"+termin["terId"], {
         method: "PUT",

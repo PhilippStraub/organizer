@@ -9,7 +9,7 @@ import Home from './home';
 import Kurse from './kurse';
 import Dozenten from './dozenten';
 import ChangePwModal from './Modal';
-import * as serviceWorker from './serviceWorker';
+
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -151,6 +151,100 @@ class Template extends React.Component{
 
 }
 
+class NavItemsHomeUser extends React.Component{
+    render() {
+        return(
+            <ul className="navbar-nav">
+                <li className="nav-item active">
+                    <Link to={'/'} className="nav-link">Home</Link>
+                </li>
+                <li className="nav-item">
+                    <Link to={'/termine'} className="nav-link">Termine</Link>
+                </li>
+            </ul>
+        )
+    }
+}
+
+class NavItemsTermineUser extends React.Component{
+    render() {
+        return(
+            <ul className="navbar-nav">
+                <li className="nav-item">
+                    <Link to={'/'} className="nav-link">Home</Link>
+                </li>
+                <li className="nav-item active">
+                    <Link to={'/termine'} className="nav-link">Termine</Link>
+                </li>
+            </ul>
+        )
+    }
+}
+
+
+class TemplateUser extends React.Component{
+    //Template which we will import in other views to display content.
+    //this component needs an anchor to add components in the inside.
+    constructor() {
+        super();
+        this.logoutUser = this.logoutUser;
+      }
+
+    logoutUser(){
+        document.cookie = "token=; path=/;";
+        window.location.reload();
+    }
+    render() {
+        return(
+            <div>
+                <Router>
+                    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+
+                        <a className="navbar-brand">
+                            <img src="./logo.png" width="30" height="30" className="d-inline-block align-top" id="logo" alt="DHBW" />
+                            DHBW <span id="stuggi">Stuttgart</span>
+                        </a>
+
+
+
+
+                            <div className="collapse navbar-collapse" id="navbarNav">
+                                <Switch>
+                                    <Route exact path='/' component={NavItemsHomeUser} />
+                                    <Route exact path='/termine' component={NavItemsTermineUser} />
+                                </Switch>
+                            </div>
+                            <div id="user">
+                                <button id="userbutton" data-toggle="modal" data-target="#ChangePwModal">
+                                    <img src={user} id="usericon" alt="" />
+                                </button>
+                                {getCookie("user")}
+                                <img src={logout} id="logout" alt="logout" onClick={this.logoutUser} />
+                            </div>
+
+                            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                <span className="navbar-toggler-icon"></span>
+                            </button>
+
+                    </nav>
+
+                    <div id="anchor">
+                    <Switch>
+                        <Route exact path='/' component={Home} />
+                        <Route path='/termine' component={Kurse} />
+                    </Switch>
+                    </div>
+                </Router>
+
+            </div>
+
+
+        );
+
+      }
+
+}
+
 
 
 class Index extends React.Component{
@@ -198,9 +292,23 @@ class Index extends React.Component{
                 );
             } else {
                 //Dozentenansicht
+                return(
+                    <div>
+                        <Router>
+                            <Switch>
+                                <Route exact path='/login' component={Login} />
+                                <Route exact path='/' component={TemplateUser} />
+                                <Route exact path='/termine' component={TemplateUser} />
+                            </Switch>
+                        </Router>
+                    </div>
 
                 //Modal von Felix zum Pw ändern nicht vergessen bei Dozententemplate
+                //2. Template generieren
 
+                //1. Seite - Dashboard das Termine anzeigt, die zu bestätigen sind -> Muss auch alt. Uhrzeit senden können
+                //2. Seite - Kalender muss mit Terminen des Doz gefüllt werden
+                );
             }
         } else {
             return(
@@ -219,16 +327,8 @@ class Index extends React.Component{
 
 
 ReactDOM.render( <Index />, document.getElementById('root'));
-// ReactDOM.render(<Login />, document.getElementById('root'));
 
 
 
 
-
-
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
 
