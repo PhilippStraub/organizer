@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-ro
 import './index.css';
 import user from './data/person.svg';
 import logout from './data/logout.svg';
-import '../node_modules/font-awesome/css/font-awesome.min.css';
 import Login from './Login';
 import Home from './home';
 import Kurse from './kurse';
