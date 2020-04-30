@@ -300,8 +300,8 @@ class Index extends React.Component{
 
                 //2. Template generieren
 
-                //1. Seite - Dashboard das Termine anzeigt, die zu bestätigen sind -> Muss auch alt. Uhrzeit senden können
-                //2. Seite - Kalender muss mit Terminen des Doz gefüllt werden
+                //1. Seite - 
+                //2. Seite - Dashboard das Termine anzeigt, die zu bestätigen sind -> Muss auch alt. Uhrzeit senden können + Kalender muss mit Terminen des Doz gefüllt werden
                 );
             }
         } else {
@@ -320,7 +320,7 @@ class Index extends React.Component{
 }
 
 
-ReactDOM.render( <Index />, document.getElementById('root'));
+ReactDOM.render(<Index />, document.getElementById('root'));
 
 
 
