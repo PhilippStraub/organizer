@@ -267,7 +267,7 @@ class Index extends React.Component{
         }
     }
     isAdmin(){
-        if(getCookie("user") == "rnold@Schwarzenegger.com"){
+        if(getCookie("user") == "Arnold@Schwarzenegger.com"){
             return true;
         } else{
             return false;
@@ -287,6 +287,7 @@ class Index extends React.Component{
                                 <Route exact path='/' component={Template} />
                                 <Route exact path='/kurse' component={Template} />
                                 <Route exact path='/dozenten' component={Template} />
+                                <Redirect from="*" to="/" />
                             </Switch>
                         </Router>
                     </div>
@@ -300,11 +301,11 @@ class Index extends React.Component{
                                 <Route exact path='/login' component={Login} />
                                 <Route exact path='/' component={TemplateUser} />
                                 <Route exact path='/termine' component={TemplateUser} />
+                                <Redirect from="*" to="/" />
                             </Switch>
                         </Router>
                     </div>
 
-                //Modal von Felix zum Pw ändern nicht vergessen bei Dozententemplate
                 //2. Template generieren
 
                 //1. Seite - 

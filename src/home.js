@@ -73,8 +73,8 @@ class HomeUser extends React.Component{
 }
 
 class Termine extends React.Component{
-    
+
 }
 
 
-export { Home, HomeUser };;
+export { Home, HomeUser };
