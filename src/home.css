@@ -16,10 +16,36 @@
 #begruessung{
     padding-top: 10px;
 }
+.rahmenlogohome{
+
+    height: 150px;
+    width: 150px;
+    border: solid 2px #E30013;
+    border-radius: 50%;
+    display: inline-block;
+    background: url('./data/logo.jpg');
+    background-size: cover;
+    
+}
+
+.beg-text{
+
+    margin-left: 15px;
+    width: 600px;
+    display: inline-block;
+}
+
+.youtubevideo{
+    width:420px;
+    height:315px;
+    float: right;
+    margin-right: 15px;
+}
 
 #begruessung2{
     margin-top: 30px;
     padding-top: 10px;
+    height: 420px;
 }
 
 #search{
