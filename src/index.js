@@ -9,6 +9,7 @@ import { Home, HomeUser } from './home';
 import Kurse from './kurse';
 import Dozenten from './dozenten';
 import ChangePwModal from './Modal';
+import Termine from './termine'
 
 
 function getCookie(cname) {
@@ -26,6 +27,15 @@ function getCookie(cname) {
     }
     return "";
 }
+
+function setCookie(cname, cvalue, exhours) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exhours*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+
 
 
 class NavItemsHome extends React.Component{
@@ -231,7 +241,7 @@ class TemplateUser extends React.Component{
                     <div id="anchor">
                     <Switch>
                         <Route exact path='/' component={HomeUser} />
-                        <Route path='/termine' component={Kurse} />
+                        <Route path='/termine' component={Termine} />
                     </Switch>
                     </div>
                     <ChangePwModal />
@@ -255,6 +265,17 @@ class Index extends React.Component{
         super();
         this.isAuth = this.isAuth;
         this.isAdmin = this.isAdmin;
+        this.getDozId = this.getDozId;
+        this.state = {
+            doz: {
+                "dozId": "",
+                "dozVorname": "",
+                "dozNachname": "",
+                "dozMail": "",
+                "dozTel": "",
+                "dozMobil": ""
+            }
+        }
     }
 
     isAuth(){
@@ -272,6 +293,32 @@ class Index extends React.Component{
         } else{
             return false;
         }
+    }
+
+    getDozId(){
+        fetch("https://vorlesungsplaner.herokuapp.com/dozenten/0", {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + getCookie("token")
+            }
+        })
+        .then(dataWrappedByPromise => dataWrappedByPromise.json())
+        .then(response => {
+            
+                this.setState({
+                    doz: response
+                });
+                
+                for (let i=0; i < this.state.doz.length; i++){
+                    
+                    if(this.state.doz[i]["dozMail"] == getCookie("user")){
+                        setCookie("DozId", this.state.doz[i]["dozId"], 5);
+                    }
+                }
+        })
+        .catch(err => {
+        console.log(err);
+        });
     }
 
     render() {
@@ -294,6 +341,7 @@ class Index extends React.Component{
                 );
             } else {
                 //Dozentenansicht
+                this.getDozId();
                 return(
                     <div>
                         <Router>

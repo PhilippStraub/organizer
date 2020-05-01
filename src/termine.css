@@ -1,0 +1,38 @@
+#mainTermine{
+    padding-top: 10px;
+}
+
+#submit{
+    margin-top: 30px;
+    padding-top: 10px;
+}
+
+.data{
+    padding: .375rem .75rem;
+    display: inline-block;
+}
+
+.termindata{
+    padding-left: 128px;
+    padding-right: 128px;
+}
+
+.termindata + .termindata{
+    margin-top: 10px;
+}
+
+.center{
+    text-align: center;
+}
+
+@media (max-width: 1200px) {
+    .data{
+        width: 100%;
+    }
+
+    .termindata{
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+}
