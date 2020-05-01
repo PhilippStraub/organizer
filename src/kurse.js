@@ -54,6 +54,7 @@ class Kurse extends React.Component{
                 "kurs": {
                 "kurId": "",
                 "kurBezeichnung": ""
+                }
             },
             terminPerMonth: {
                 0:[null],
@@ -134,7 +135,7 @@ class Kurse extends React.Component{
             }
             
                 
-        }
+        
         };
     }
     

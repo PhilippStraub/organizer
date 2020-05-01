@@ -62,7 +62,7 @@ class HomeUser extends React.Component{
                         <h1 className="display-4">Willkommen {getCookie("user")}!</h1>
                         <hr></hr>
                     </a>
-                
+                    
                             
                 </div>
                 
