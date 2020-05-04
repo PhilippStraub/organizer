@@ -38,6 +38,8 @@ class Termine extends React.Component{
         this.inspectTermin = this.inspectTermin.bind(this);
         this.patchTermin = this.patchTermin.bind(this);
         this.deleteTermin = this.deleteTermin.bind(this);
+        this.lookupUnaccepted = this.lookupUnaccepted.bind(this);
+        this.sendTrue = this.sendTrue;
         this.state = {
             
             terminPerMonth: {
@@ -55,6 +57,35 @@ class Termine extends React.Component{
                 11:[null]
             },
             lookupTermineSemester: {
+                "terId": "",
+                "terDatum": "",
+                "terVonUhrzeit": "",
+                "terBisUhrzeit": "",
+                "raumNr": "",
+                "verfügbar": "",
+                "vorlesungen": {
+                    "vorId": "",
+                    "vorName": "",
+                    "dozenten": {
+                        "dozId": "",
+                        "dozVorname": "",
+                        "dozNachname": "",
+                        "dozMail": "",
+                        "dozTel": "",
+                        "dozMobil": "",
+                        "password": ""
+                    }
+                },
+                "semester": {
+                    "semId": "",
+                    "sem_bez": "",
+                    "kurs": {
+                        "kurId": "",
+                        "kurBezeichnung": ""
+                    }
+                }
+            },
+            lookupUnaccepted: {
                 "terId": "",
                 "terDatum": "",
                 "terVonUhrzeit": "",
@@ -117,6 +148,109 @@ class Termine extends React.Component{
                 
         
         };
+    }
+
+    componentDidMount() {
+        window.addEventListener('load', this.lookupTermineSemester);
+        window.addEventListener('load', this.lookupUnaccepted);
+    }
+
+    componentWillUnmount() { 
+        window.removeEventListener('load', this.lookupTermineSemester);
+        window.removeEventListener('load', this.lookupUnaccepted);
+    }
+
+    lookupUnaccepted(){
+        fetch("https://vorlesungsplaner.herokuapp.com/termine/dozenten/" + getCookie("DozId"), {
+            method: "GET",
+            headers: {
+                "authorization": "Bearer " + getCookie("token")
+            }
+        })
+        .then(dataWrappedByPromise => dataWrappedByPromise.json())
+        .then(res => {
+            this.setState({
+                lookupUnaccepted: res
+            })
+            
+            var found = false;
+            
+
+            for (let i=0; i < this.state.lookupUnaccepted.length; i++){
+                if(this.state.lookupUnaccepted[i]["verfügbar"] == false){
+                    found = true;
+
+                    var rahmen = document.createElement("div");
+                    rahmen.className = "termindata input-group";
+
+                    var in1 = document.createElement("input");
+                    in1.type = "text";
+                    in1.className = "center form-control";
+                    in1.value = this.state.lookupUnaccepted[i]["terVonUhrzeit"] + "-" + this.state.lookupUnaccepted[i]["terBisUhrzeit"];
+
+                    var in2 = document.createElement("input");
+                    in2.type = "text";
+                    in2.className = "center form-control";
+                    in2.value = this.state.lookupUnaccepted[i]["vorlesungen"]["vorName"];
+                    
+                    var butRahmen = document.createElement("div");
+                    butRahmen.className = "input-group-append";
+                    var button = document.createElement("button");
+                    button.className = "btn btn-outline-danger"
+                    button.type = "button";
+                    button.innerHTML = '<svg class="bi bi-check" width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/></svg>'
+                    button.onClick =() => {
+                        this.sendTrue(this.state.lookupUnaccepted[i],this.state.lookupUnaccepted[i]["terId"]);
+                    } 
+
+
+                    rahmen.appendChild(in1);
+                    rahmen.appendChild(in2);
+                    butRahmen.appendChild(button)
+                    rahmen.appendChild(butRahmen);
+                    
+                }
+                
+            }
+
+            if(found==false){
+                var rahmen = document.createElement("div");
+                rahmen.className = "termindata input-group";
+
+                var zitat = document.createElement("div");
+                zitat.id = "zitatTermine";
+                zitat.innerHTML = "<cite>Keine neuen Vorlesungen zu bestätigen.</cite>"
+                rahmen.appendChild(zitat);
+            }
+
+            document.getElementById("submitlist").appendChild(rahmen);
+            
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    sendTrue(termin,Id){
+        console.log(termin);
+        termin["verfügbar"] = "true";
+        var json = JSON.stringify(termin);
+
+        fetch("https://vorlesungsplaner.herokuapp.com/termine/" + Id, {
+        method: "PUT",
+        headers: {
+            "content-type": "application/json",
+            "authorization": "Bearer " + getCookie("token")
+        },
+        body:json
+        })
+        .then(response => {
+        console.log(response);
+        })
+        .catch(err => {
+        console.log(err);
+        });
+
     }
     
 
@@ -603,14 +737,7 @@ class Termine extends React.Component{
                 <div className="content" id="contentTermine" >
                     <h1 className="display-4">Termine</h1>
                     <hr></hr>
-                    <div className="center">
-                        <button onClick={this.lookupTermineSemester} className="btn btn-danger mb-2" id="search">
-                            <svg className="bi bi-search" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
-                                <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"/>
-                            </svg>
-                        </button>
-                    </div>
+                   
                     
                     
                     
