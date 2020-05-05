@@ -54,8 +54,17 @@
     border-color: #E30013;
 }
 
+#heuteVer{
+    margin-bottom: 5px;
+    font-size: 17px;
+}
+
 @media (max-width: 600px) {
     .display-4{
         font-size: 23px;
+    }
+
+    #heuteVer{
+        font-size: 15px;
     }
 }
