@@ -114,6 +114,7 @@ class Termine extends React.Component{
                     }
                 }
             },
+            unacceptedInspect: undefined,
             date: undefined,
             terminForInspect: {
                 "terId": "",
@@ -169,6 +170,7 @@ class Termine extends React.Component{
         })
         .then(dataWrappedByPromise => dataWrappedByPromise.json())
         .then(res => {
+            console.log(res);
             this.setState({
                 lookupUnaccepted: res
             })
@@ -177,6 +179,7 @@ class Termine extends React.Component{
             
 
             for (let i=0; i < this.state.lookupUnaccepted.length; i++){
+                console.log("hierhier");
                 if(this.state.lookupUnaccepted[i]["verfügbar"] == false){
                     found = true;
 
@@ -186,7 +189,10 @@ class Termine extends React.Component{
                     var in1 = document.createElement("input");
                     in1.type = "text";
                     in1.className = "center form-control";
-                    in1.value = this.state.lookupUnaccepted[i]["terVonUhrzeit"] + "-" + this.state.lookupUnaccepted[i]["terBisUhrzeit"];
+                    var date = this.state.lookupUnaccepted[i]["terDatum"];
+                    var datestr = date.slice(0, 10);
+
+                    in1.value = datestr + ": " + this.state.lookupUnaccepted[i]["terVonUhrzeit"] + "-" + this.state.lookupUnaccepted[i]["terBisUhrzeit"];
 
                     var in2 = document.createElement("input");
                     in2.type = "text";
@@ -199,31 +205,38 @@ class Termine extends React.Component{
                     button.className = "btn btn-outline-danger"
                     button.type = "button";
                     button.innerHTML = '<svg class="bi bi-check" width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/></svg>'
-                    button.onClick =() => {
-                        this.sendTrue(this.state.lookupUnaccepted[i],this.state.lookupUnaccepted[i]["terId"]);
-                    } 
+                    button.onclick =() => {
+                                
+                        this.setState({
+                            unacceptedInspect: this.state.lookupUnaccepted[i]
+                        });
+                        
+                        this.sendTrue();
+                    }
+                    
 
 
                     rahmen.appendChild(in1);
                     rahmen.appendChild(in2);
                     butRahmen.appendChild(button)
                     rahmen.appendChild(butRahmen);
-                    
+                    document.getElementById("submitlist").appendChild(rahmen);  
                 }
                 
             }
 
             if(found==false){
                 var rahmen = document.createElement("div");
-                rahmen.className = "termindata input-group";
+                rahmen.className = "center";
 
                 var zitat = document.createElement("div");
                 zitat.id = "zitatTermine";
                 zitat.innerHTML = "<cite>Keine neuen Vorlesungen zu bestätigen.</cite>"
                 rahmen.appendChild(zitat);
+                document.getElementById("submitlist").appendChild(rahmen);
             }
 
-            document.getElementById("submitlist").appendChild(rahmen);
+            
             
         })
         .catch(err => {
@@ -231,12 +244,14 @@ class Termine extends React.Component{
         });
     }
 
-    sendTrue(termin,Id){
+    sendTrue(){
+        var termin = this.state.unacceptedInspect;
         console.log(termin);
         termin["verfügbar"] = "true";
+        
         var json = JSON.stringify(termin);
-
-        fetch("https://vorlesungsplaner.herokuapp.com/termine/" + Id, {
+        console.log(json);
+        fetch("https://vorlesungsplaner.herokuapp.com/termine/" + termin["terId"], {
         method: "PUT",
         headers: {
             "content-type": "application/json",
@@ -245,6 +260,7 @@ class Termine extends React.Component{
         body:json
         })
         .then(response => {
+            window.location.reload();
         console.log(response);
         })
         .catch(err => {
@@ -678,58 +694,7 @@ class Termine extends React.Component{
                         </a>
                         <div id="submitlist">
                             
-                            <div class="termindata input-group">
-                                
-                                <input type="text" class="center form-control" value="9:00-12:00"/>
-                                <input type="text" class="center form-control" value="Dienstleistungsmanagement" />
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-danger" type="button">
-                                        <svg class="bi bi-check" width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </button>
-                                  
-                                </div>
-                            </div>
-                            <div class="termindata input-group">
-                                
-                                <input type="text" class="center form-control" value="9:00-12:00"/>
-                                <input type="text" readonly class="center form-control" value="Dienstleistungsmanagement" />
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-danger" type="button">
-                                        <svg class="bi bi-check" width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </button>
-                                  
-                                </div>
-                            </div>
-                            <div class="termindata input-group">
-                                
-                                <input type="text" class="center form-control" value="9:00-12:00"/>
-                                <input type="text" readonly class="center form-control" value="Dienstleistungsmanagement" />
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-danger" type="button">
-                                        <svg class="bi bi-check" width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </button>
-                                  
-                                </div>
-                            </div>
-                            <div class="termindata input-group">
-                                
-                                <input type="text" class="center form-control" value="9:00-12:00"/>
-                                <input type="text" readonly class="center form-control" value="Dienstleistungsmanagement" />
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-danger" type="button">
-                                        <svg class="bi bi-check" width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </button>
-                                  
-                                </div>
-                            </div>
+                            
                         </div>
                 </div>
                 
