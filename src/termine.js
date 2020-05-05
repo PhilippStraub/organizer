@@ -162,7 +162,7 @@ class Termine extends React.Component{
     }
 
     lookupUnaccepted(){
-        fetch("https://vorlesungsplaner.herokuapp.com/termine/dozenten/" + getCookie("DozId"), {
+        fetch("https://vorlesungsplaner.herokuapp.com/termine/dozenten/0" + getCookie("DozId"), {
             method: "GET",
             headers: {
                 "authorization": "Bearer " + getCookie("token")
@@ -251,7 +251,7 @@ class Termine extends React.Component{
         
         var json = JSON.stringify(termin);
         console.log(json);
-        fetch("https://vorlesungsplaner.herokuapp.com/termine/" + termin["terId"], {
+        fetch("https://vorlesungsplaner.herokuapp.com/termine/0" + termin["terId"], {
         method: "PUT",
         headers: {
             "content-type": "application/json",
@@ -632,7 +632,7 @@ class Termine extends React.Component{
         SemIdArray["semId"] = termin["semester"]["semId"];
         var jsonArray = {};
         jsonArray["terId"] = termin["terId"];
-        jsonArray["terDatum"] =  object["terDatum"];
+        jsonArray["terDatum"] =  termin["terDatum"];
         jsonArray["terVonUhrzeit"] = object["terVonUhrzeit"];
         jsonArray["terBisUhrzeit"] = object["terBisUhrzeit"];
         jsonArray["verfügbar"] = termin["verfügbar"];
@@ -671,8 +671,7 @@ class Termine extends React.Component{
         })
         .then(response => {
             if(response.ok){
-                document.getElementById("viewModalCenterClose").click();
-                document.getElementById("search").click();
+                window.location.reload();
             }
         })
         .catch(err => {
@@ -723,7 +722,7 @@ class Termine extends React.Component{
                                 <div class="modal-body">
                                     <div className="modalReihe">
                                         <p>Datum</p>                        
-                                        <input type="text" class="form-control" id="inputViewTerminDatum" name="terDatum" placeholder="Datum"/>
+                                        <input type="text" readonly className="form-control-plaintext" id="inputViewTerminDatum" name="terDatum" placeholder="Datum"/>
                                     </div>
                                     <div className="modalReihe">
                                         <p>Dozent</p>                          
