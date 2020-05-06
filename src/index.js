@@ -102,7 +102,7 @@ class Template extends React.Component{
       }
 
     logoutUser(){
-        document.cookie = "token=; path=/;";
+        document.cookie = "token=; DozId=; path=/;";
         window.location.reload();
     }
     render() {
@@ -201,7 +201,7 @@ class TemplateUser extends React.Component{
       }
 
     logoutUser(){
-        document.cookie = "token=; path=/;";
+        document.cookie = "token=; DozId=; path=/;";
         window.location.reload();
     }
     render() {
