@@ -31,7 +31,7 @@
 .beg-text{
 
     margin-left: 15px;
-    width: 600px;
+    width: 50%;
     display: inline-block;
 }
 
@@ -45,7 +45,7 @@
 #begruessung2{
     margin-top: 30px;
     padding-top: 10px;
-    height: 420px;
+    height: 430px;
 }
 
 #search{
@@ -54,8 +54,23 @@
     border-color: #E30013;
 }
 
-@media (max-width: 600px) {
-    .display-4{
-        font-size: 23px;
-    }
+@media (max-width: 1050px) {
+    #begruessung2{
+        margin-top: 30px;
+        padding-top: 10px;
+        height: 830px;
+    
+}
+.youtubevideo{
+    width:60%;
+    height: auto;
+    margin: 15px;
+    float: left;
+}
+.beg-text{
+
+    margin: 15px;
+    width: 95%;
+    display: block;
+}
 }

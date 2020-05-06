@@ -29,6 +29,7 @@ class Home extends React.Component{
                 <div className="rahmenlogohome"></div>
               <div id="begruessung">
                  <div className="content" id="begruessung2">
+                     <br></br>
                     <a>
                         <h1 className="display-4">Herzlich Willkommen {getCookie("user")}!</h1>
 
