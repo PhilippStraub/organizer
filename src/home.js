@@ -57,6 +57,102 @@ class Home extends React.Component{
 
 
 class HomeUser extends React.Component{
+    constructor(probs) {
+        super(probs);
+        this.loadTermineToday = this.loadTermineToday.bind(this);
+        this.state = {
+            
+            loadTermineToday: {
+                "terId": "",
+                "terDatum": "",
+                "terVonUhrzeit": "",
+                "terBisUhrzeit": "",
+                "raumNr": "",
+                "verfügbar": "",
+                "vorlesungen": {
+                    "vorId": "",
+                    "vorName": "",
+                    "dozenten": {
+                        "dozId": "",
+                        "dozVorname": "",
+                        "dozNachname": "",
+                        "dozMail": "",
+                        "dozTel": "",
+                        "dozMobil": "",
+                        "password": ""
+                    }
+                }
+            },
+            termin: undefined
+        }
+    }
+    componentDidMount() {
+        window.addEventListener('load', this.loadTermineToday);
+    }
+
+    componentWillUnmount() { 
+        window.removeEventListener('load', this.loadTermineToday);
+    }
+
+    loadTermineToday(){
+        var today = new Date();
+        var monthtoday = today.getUTCMonth(); 
+        var daytoday = today.getUTCDate();
+        var yeartoday = today.getUTCFullYear();
+        fetch("https://vorlesungsplaner.herokuapp.com/termine/dozenten/" + getCookie("DozId"), {
+            method: "GET",
+            headers: {
+                "authorization": "Bearer " + getCookie("token")
+            }
+        })
+        .then(dataWrappedByPromise => dataWrappedByPromise.json())
+        .then(res => {
+            this.setState({
+                loadTermineToday: res
+            });
+
+            for (let i=0; i < this.state.loadTermineToday.length; i++){
+                var datum = new Date(this.state.loadTermineToday[i]["terDatum"]);
+                var monthdatum = datum.getUTCMonth(); 
+                var daydatum = datum.getUTCDate();
+                var yeardatum = datum.getUTCFullYear();
+                if(yeardatum == yeartoday && monthdatum == monthtoday && daydatum == daytoday){
+                    
+                    this.setState({
+                        termin: true
+                    });
+                    //Elemente laden
+                    //Heute sind folgende Veranstaltungen:
+                    var termin0 = document.createElement("div");
+                    termin0.className = "termin";
+                    termin0.innerHTML = this.state.loadTermineToday[i]["terVonUhrzeit"] + ' - ' + this.state.loadTermineToday[i]["terBisUhrzeit"] + 
+                                        '<br/>Raum: ' + this.state.loadTermineToday[i]["raumNr"]+ '<br/>' +
+                                        this.state.loadTermineToday[i]["vorlesungen"]["vorName"] + '<br/>' + this.state.loadTermineToday[i]["semester"]["kurs"]["kurBezeichnung"];
+
+                    document.getElementById("heuteterminehier").appendChild(termin0);
+                }
+
+                
+            }
+
+            if(this.state.termin == undefined){
+                var rahmen = document.createElement("div");
+                rahmen.className = "center";
+
+                var kasten = document.createElement("div");
+                kasten.id = "zitatTermine"
+                kasten.innerHTML = "<cite>Es sind keine Veranstaltungen für heute geplant.</cite>"
+                rahmen.appendChild(kasten);
+                document.getElementById("heuteterminehier").removeChild(document.getElementById("heuteVer"));
+                document.getElementById("heuteterminehier").appendChild(rahmen);
+            }
+  
+        })
+        .catch(err => {
+            console.log(err);
+        });
+        
+    }
     render() {
         return(
             <div id="begruessung">
@@ -65,7 +161,10 @@ class HomeUser extends React.Component{
                         <h1 className="display-4">Willkommen {getCookie("user")}!</h1>
                         <hr></hr>
                     </a>
-                    
+                    <div class="center" id="heuteterminehier">
+                        <div id="heuteVer">Heute sind folgende Veranstaltungen:</div>
+                        
+                    </div>
                             
                 </div>
                 

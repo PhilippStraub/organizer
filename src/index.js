@@ -274,7 +274,9 @@ class Index extends React.Component{
                 "dozMail": "",
                 "dozTel": "",
                 "dozMobil": ""
-            }
+            },
+            abgeholt: undefined
+            
         }
     }
 
@@ -315,6 +317,9 @@ class Index extends React.Component{
                         setCookie("DozId", this.state.doz[i]["dozId"], 5);
                     }
                 }
+                this.setState({
+                    abgeholt: true
+                });
         })
         .catch(err => {
         console.log(err);
@@ -341,7 +346,10 @@ class Index extends React.Component{
                 );
             } else {
                 //Dozentenansicht
-                this.getDozId();
+                if(this.state.abgeholt == undefined){
+                    this.getDozId();
+                }
+
                 return(
                     <div>
                         <Router>
