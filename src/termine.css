@@ -25,6 +25,20 @@
     text-align: center;
 }
 
+.anzeigen{
+    margin: 0 auto;
+}
+
+.showbest{
+    margin-top: -15px;
+    color: #5C6971;
+}
+
+.showbest:hover{
+    color:#E30013;
+}
+
+
 @media (max-width: 1200px) {
     .data{
         width: 100%;

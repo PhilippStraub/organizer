@@ -151,16 +151,6 @@ class Termine extends React.Component{
         };
     }
 
-    componentDidMount() {
-        window.addEventListener('load', this.lookupTermineSemester);
-        window.addEventListener('load', this.lookupUnaccepted);
-    }
-
-    componentWillUnmount() { 
-        window.removeEventListener('load', this.lookupTermineSemester);
-        window.removeEventListener('load', this.lookupUnaccepted);
-    }
-
     lookupUnaccepted(){
         fetch("https://vorlesungsplaner.herokuapp.com/termine/dozenten/0" + getCookie("DozId"), {
             method: "GET",
@@ -176,7 +166,7 @@ class Termine extends React.Component{
             })
             
             var found = false;
-            
+            document.getElementById("submitlist").removeChild(document.getElementById("bestanzeigen"));
 
             for (let i=0; i < this.state.lookupUnaccepted.length; i++){
                 console.log("hierhier");
@@ -572,7 +562,7 @@ class Termine extends React.Component{
 
         }
 
-
+        document.getElementById("contentTermine").removeChild(document.getElementById("teranzeigen"));
         document.getElementById("contentTermine").appendChild(kalender);
 
     }
@@ -681,8 +671,6 @@ class Termine extends React.Component{
     
     
     render() {
-
-
         
         return(
             <div id="mainTermine">
@@ -692,7 +680,13 @@ class Termine extends React.Component{
                             <hr></hr>
                         </a>
                         <div id="submitlist">
-                            
+                            <div id="bestanzeigen" className="center" onClick={this.lookupUnaccepted}>
+                                <cite>Bestätigungen anzeigen</cite><br/>
+                                <svg class="showbest bi bi-chevron-compact-down" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M1.553 6.776a.5.5 0 01.67-.223L8 9.44l5.776-2.888a.5.5 0 11.448.894l-6 3a.5.5 0 01-.448 0l-6-3a.5.5 0 01-.223-.67z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                        
                             
                         </div>
                 </div>
@@ -701,7 +695,13 @@ class Termine extends React.Component{
                 <div className="content" id="contentTermine" >
                     <h1 className="display-4">Termine</h1>
                     <hr></hr>
-                   
+                    <div id="teranzeigen" className="center" onClick={this.lookupTermineSemester}>
+                        <cite>Termine laden</cite><br/>
+                        <svg class="showbest bi bi-chevron-compact-down" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M1.553 6.776a.5.5 0 01.67-.223L8 9.44l5.776-2.888a.5.5 0 11.448.894l-6 3a.5.5 0 01-.448 0l-6-3a.5.5 0 01-.223-.67z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    
                     
                     
                     

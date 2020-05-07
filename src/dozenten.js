@@ -110,7 +110,9 @@ class Dozenten extends React.Component{
     
     )
     .then(function (response) {
-        console.log(response);
+        if(response.ok){
+            window.location.reload();
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -169,14 +171,21 @@ class Dozenten extends React.Component{
             
     
     )
-    .then(function (response) {
-        if(response.ok){
-            window.location.reload();
+    .then(res =>{
+        var errDiv =  document.getElementById("errDoz").childNodes;
+        if(res.ok){
+            window.location.reload(); 
+        } else {
+            if(errDiv.length != 0){
+            } else{
+                var error = document.createElement("div");
+                error.className = "alert alert-danger";
+                error.id = "dozDelErr"
+                error.role = "alert";
+                error.innerHTML = 'Es existieren Vorlesungen mit diesem Dozent.';
+                document.getElementById("errDoz").appendChild(error);
+            }
         }
-        else {
-            alert("Dem Dozenten sind Vorlesungen zugewiesen")
-        }
-        console.log(response);
                 
       })
       .catch(function (error) {
@@ -197,14 +206,21 @@ class Dozenten extends React.Component{
             
     
     )
-    .then(function (response) {
-        if(response.ok){
-            window.location.reload();
+    .then(res => {
+        var errDiv =  document.getElementById("errVor").childNodes;
+        if(res.ok){
+            window.location.reload(); 
+        } else {
+            if(errDiv.length != 0){
+            } else{
+                var error = document.createElement("div");
+                error.className = "alert alert-danger";
+                error.id = "vorDelErr"
+                error.role = "alert";
+                error.innerHTML = 'Vorlesung kann nicht gelöscht werden, es existiert ein Termin mit dieser.';
+                document.getElementById("errVor").appendChild(error);
+            }
         }
-        else {
-            alert("Der Vorlesung sind Termine zugewiesen")
-        }
-        console.log(response);
                 
       })
       .catch(function (error) {
@@ -311,17 +327,29 @@ class Dozenten extends React.Component{
                     <button className="btn btn-danger" id="anlegen" type="submit">Anlegen</button></div>
                     </form>
                     </div>
+                    <div id="errDoz">
+
+                    </div>
                     <div className="content">
                         <br></br>
-                        <h1 className="display-4" id="dozÜberschrift">Dozenten</h1>
+                        <div className="center">
+                            <h1 className="display-4">Dozenten</h1>
+                        </div>
+                        
                         
                         <hr></hr>
                         <div id="dozentenverzeichnis" className="list-group">{dozData}
                                 </div>
-                        </div>
+                    </div>
+                    <div id="errVor">
+
+                    </div>
                     <div className="contentEnde">
                         <br></br>
-                        <h1 className="display-4" id="dozÜberschrift">Vorlesungen</h1>
+                        <div className="center">
+                            <h1 className="center display-4">Vorlesungen</h1>
+                        </div>
+                        
                         
                         <hr></hr>
                         <div id="vorlesungverzeichnis" className="list-group">{vorData}
