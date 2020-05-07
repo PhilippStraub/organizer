@@ -28,13 +28,6 @@
     
 }
 
-.beg-text{
-
-    margin-left: 15px;
-    width: 600px;
-    display: inline-block;
-}
-
 .youtubevideo{
     width:420px;
     height:315px;
@@ -66,6 +59,7 @@
 }
 
 
+
 @media (max-width: 600px) {
     .display-4{
         font-size: 23px;
@@ -73,5 +67,9 @@
 
     #heuteVer{
         font-size: 15px;
+    }
+    .boxen{
+        width:100%;
+        height: auto;
     }
 }
