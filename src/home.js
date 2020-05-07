@@ -19,60 +19,30 @@ function getCookie(cname) {
 
 
 class Home extends React.Component{
-    //Later there will be a .js for each header in menu like Dozenten, Termine, etc.
-    //These .js Files will have two different main components: One full and one shorter view
-    //the export default will always be the shorter version
-    //that way we're able to include them here in our home view but also seperate them.
     render() {
         return(
             <div>
                 <div className="rahmenlogohome"></div>
                 <div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Herzlich Willkommen {getCookie("user")}!</h5>
-    
-    <p class="card-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                        </p>
-    
-  </div>
-</div>
-<br></br>
-<div class="card">
-  <div class="card-body">
-    
-    
-  <iframe className="youtubevideo"src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
-    
-  </div>
-</div>
-
-              {/* <div id="begruessung">
-                 <div className="content" id="begruessung2">
-                     <br></br>
-                    <a>
-                        <h1 className="display-4">Herzlich Willkommen {getCookie("user")}!</h1>
-
-                        <hr></hr>
-                        </a>
-                        <div className="boxen">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                        </div>
-                        <iframe className="youtubevideo"src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
-                        <div className="boxen">
-
-                        </div>
-                        <div className="boxen">
+                      <div class="card-body">
+                        <h5 class="card-title">Herzlich Willkommen {getCookie("user")}!</h5>
                             
-                        </div>
-                        
-
-                    
-                   
-                    
+                        <p class="card-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                                            </p>
                             
-                </div>
-                
-            </div>  */}
+                      </div>
+                    </div>
+                    <br></br>
+                    <div class="card">
+                      <div class="card-body">
+                            
+                            
+                      <iframe className="youtubevideo"src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+                            
+                      </div>
+                    </div>
+
+              
             </div>
 
         );

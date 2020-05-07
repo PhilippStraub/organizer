@@ -168,8 +168,7 @@ class Termine extends React.Component{
             var found = false;
             document.getElementById("submitlist").removeChild(document.getElementById("bestanzeigen"));
 
-            for (let i=0; i < this.state.lookupUnaccepted.length; i++){
-                console.log("hierhier");
+            for (let i=0; i < this.state.lookupUnaccepted.length; i++){   
                 if(this.state.lookupUnaccepted[i]["verfügbar"] == false){
                     found = true;
 
@@ -236,11 +235,9 @@ class Termine extends React.Component{
 
     sendTrue(){
         var termin = this.state.unacceptedInspect;
-        console.log(termin);
         termin["verfügbar"] = "true";
         
         var json = JSON.stringify(termin);
-        console.log(json);
         fetch("https://vorlesungsplaner.herokuapp.com/termine/0" + termin["terId"], {
         method: "PUT",
         headers: {
@@ -251,7 +248,6 @@ class Termine extends React.Component{
         })
         .then(response => {
             window.location.reload();
-        console.log(response);
         })
         .catch(err => {
         console.log(err);
@@ -305,8 +301,7 @@ class Termine extends React.Component{
                 this.state.date = d;
             }
             
-            this.getTermineMonth(this.state.date);     
-            console.log("hier");   
+            this.getTermineMonth(this.state.date);        
         })
         .catch(err => {
             console.log(err);

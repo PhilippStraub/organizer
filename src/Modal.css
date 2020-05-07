@@ -1,5 +1,4 @@
 #userbutton {
-    /*Der Knopf Männchen*/
     background: transparent;
     border: none;
     color: transparent;
@@ -20,7 +19,6 @@
 }
 
 #inputgroop_changeemail, #inputgroop_changepw{
-
  margin: 14px;
  width: 94%;
 }

@@ -61,12 +61,12 @@ class Dozenten extends React.Component{
                 "Authorization": "Bearer " + getCookie("token")
             }})
         .then((response) => {
-            // console.log("response", response);
+            
             this.setState({
                 fetchDozent: response.data
             });
-            console.log("fetchDozent", this.state.fetchDozent);
-            // console.log("dozenten", this.state.fetchDozent[1])
+            
+            
         })
         .catch((error) => {
             console.log(error);
@@ -78,12 +78,12 @@ class Dozenten extends React.Component{
                 "Authorization": "Bearer " + getCookie("token")
             }})
         .then((response) => {
-            // console.log("response", response);
+            
             this.setState({
                 fetchVorlesung: response.data
             });
-            console.log("fetchVorlesung", this.state.fetchVorlesung);
-            // console.log("dozenten", this.state.fetchDozent[1])
+            
+            
         })
         .catch((error) => {
             console.log(error);
@@ -98,7 +98,7 @@ class Dozenten extends React.Component{
       object[key] = value;
     });
     var json = JSON.stringify(object);
-    alert(json);
+   
         fetch('https://vorlesungsplaner.herokuapp.com/dozenten/register',
         {  
             method: "POST",
@@ -136,10 +136,7 @@ class Dozenten extends React.Component{
     jsonArray["vorName"] = object["vorName"];
     jsonArray["dozenten"] =  KurIdArray;
     var json = JSON.stringify(jsonArray);
-    //alert(json);
-
-    // 
-   
+       
         fetch('https://vorlesungsplaner.herokuapp.com/vorlesungen/',
         {  
             method: "POST",
@@ -152,7 +149,7 @@ class Dozenten extends React.Component{
     
     )
     .then(function (response) {
-        console.log(response);
+        
         
       })
       .catch(function (error) {

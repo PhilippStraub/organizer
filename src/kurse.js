@@ -163,7 +163,6 @@ class Kurse extends React.Component{
         .then((res) => {
             if(res.ok){
                 document.getElementsByName('Kursform')[0].reset();
-                console.log("Kurs wurde erfolgreich angelegt.")
                 document.getElementById("show-header").click();
                 document.getElementById("show-header").click();
             }
@@ -211,7 +210,6 @@ class Kurse extends React.Component{
             .then((res) => {
                 if(res.ok){
                     document.getElementsByName('Semesterform')[0].reset();
-                    console.log("Semester wurde erfolgreich dem Kurs hinzugefügt.");
                     document.getElementById("show-header").click();
                     document.getElementById("show-header").click();
                 }
@@ -890,7 +888,7 @@ class Kurse extends React.Component{
             object[key] = value;
         });
 
-        console.log(this.state.addTerminData["datum"]);
+       
         var SemIdArray = {};
         SemIdArray["semId"] = this.state.addTerminData["semesterId"];
         var VorIdArray = {};

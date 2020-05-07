@@ -121,7 +121,7 @@ class Template extends React.Component{
         })
         .then(dataWrappedByPromise => dataWrappedByPromise.json())
         .then((response) => {
-            console.log(response);
+            
             this.setState({
                 doz: response
             });

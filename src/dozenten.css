@@ -82,13 +82,16 @@
     display: inline-block;
 }
 
+
 #vorlesung{
     margin-right: 4%;
     width: 100%;
     height: auto;
     display: inline-block;
-    
+    margin-top: -10px;
+    margin-bottom: 0;
 }
+
 
 
 .trash2{
@@ -158,19 +161,7 @@
 }
 
 
-#vorlesung{
-    width: 100%;
-    height: auto;
-    display: inline-block;
-    margin-top: -10px;
-    margin-bottom: 0;
-}
 
-#dozent{
-    width: 100%;
-    height: auto;
-    display: inline-block;
-}
 
 
 
