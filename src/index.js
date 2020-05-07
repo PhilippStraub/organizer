@@ -99,8 +99,41 @@ class Template extends React.Component{
     constructor() {
         super();
         this.logoutUser = this.logoutUser;
+        this.getData = this.getData.bind(this);
+        this.state = {
+            doz: {
+                "dozId": "",
+                "dozVorname": "",
+                "dozNachname": "",
+                "dozMail": "",
+                "dozTel": "",
+                "dozMobil": ""
+            }
+        }
       }
 
+    getData(){
+        fetch("https://vorlesungsplaner.herokuapp.com/dozenten/" + getCookie("DozId"), {
+            "method": "GET",
+            "headers": {
+                "authorization": "Bearer " + getCookie("token")
+            }
+        })
+        .then(dataWrappedByPromise => dataWrappedByPromise.json())
+        .then((response) => {
+            console.log(response);
+            this.setState({
+                doz: response
+            });
+            document.getElementById("VornameDoz").value = this.state.doz["dozVorname"];
+            document.getElementById("NachnameDoz").value = this.state.doz["dozNachname"];
+            document.getElementById("telDoz").value = this.state.doz["dozTel"];
+            document.getElementById("mobDoz").value = this.state.doz["dozMobil"];
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
     logoutUser(){
         document.cookie = "token=; DozId=; path=/;";
         window.location.reload();
@@ -128,7 +161,7 @@ class Template extends React.Component{
                             </div>
 
                             <div id="user">
-                                <button id="userbutton" data-toggle="modal" data-target="#ChangePwModal">
+                                <button id="userbutton" onClick={this.getData} data-toggle="modal" data-target="#ChangePwModal">
                                     <img src={user} id="usericon" alt="" />
                                 </button>
                             
@@ -198,8 +231,41 @@ class TemplateUser extends React.Component{
     constructor() {
         super();
         this.logoutUser = this.logoutUser;
-      }
+        this.getData = this.getData.bind(this);
+        this.state = {
+            doz: {
+                "dozId": "",
+                "dozVorname": "",
+                "dozNachname": "",
+                "dozMail": "",
+                "dozTel": "",
+                "dozMobil": ""
+            }
+        }
+    }
 
+    getData(){
+        fetch("https://vorlesungsplaner.herokuapp.com/dozenten/" + getCookie("DozId"), {
+            "method": "GET",
+            "headers": {
+                "authorization": "Bearer " + getCookie("token")
+            }
+        })
+        .then(dataWrappedByPromise => dataWrappedByPromise.json())
+        .then((response) => {
+
+            this.setState({
+                doz: response
+            });
+            document.getElementById("VornameDoz").value = this.state.doz["dozVorname"];
+            document.getElementById("NachnameDoz").value = this.state.doz["dozNachname"];
+            document.getElementById("telDoz").value = this.state.doz["dozTel"];
+            document.getElementById("mobDoz").value = this.state.doz["dozMobil"];
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
     logoutUser(){
         document.cookie = "token=; DozId=; path=/;";
         window.location.reload();
@@ -225,7 +291,7 @@ class TemplateUser extends React.Component{
                                 </Switch>
                             </div>
                             <div id="user">
-                                <button id="userbutton" data-toggle="modal" data-target="#ChangePwModal">
+                                <button id="userbutton" onClick={this.getData} data-toggle="modal" data-target="#ChangePwModal">
                                     <img src={user} id="usericon" alt="" />
                                 </button>
                                 {getCookie("user")}
@@ -329,7 +395,12 @@ class Index extends React.Component{
     render() {
         if(this.isAuth()){
             //Authentiziert
+            if(this.state.abgeholt == undefined){
+                this.getDozId();
+            }
             if(this.isAdmin()){
+
+                
                 //Admin-Ansicht
                 return(
                     <div>
@@ -346,9 +417,6 @@ class Index extends React.Component{
                 );
             } else {
                 //Dozentenansicht
-                if(this.state.abgeholt == undefined){
-                    this.getDozId();
-                }
 
                 return(
                     <div>

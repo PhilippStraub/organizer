@@ -20,97 +20,101 @@ function getCookie(cname) {
     return "";
 }
 
-function getDozByMail(mail){
-    fetch("https://vorlesungsplaner.herokuapp.com/dozenten/0", {
-    "method": "GET",
-    "headers": {
-        "authorization": "Bearer" + getCookie("token")
+
+class ChangePwModal extends React.Component{
+    constructor() {
+        super();
+        this.persDaten = this.persDaten.bind(this);
     }
-    })
-    .then(response => {
-    console.log(response);
-    })
-    .catch(err => {
-    console.log(err);
-    error(1)
-    });
-}
 
-function error(errorcode){
-    switch (errorcode){
-        case 1:
-            alert('Es ist ein Fehler aufgetreten! Bitte versuchen Sie es erneut.');
-        break;
+    persDaten(event){
+        event.preventDefault();
+        const data = new FormData(event.target);
+        var object = {};
+        data.forEach(function(value, key){
+            object[key] = value;
+        });
 
-        case 2:
-            alert('Das Passwort wurde erfolgreich geändert.');
-        break;
+        var jsonArray = {};
+        jsonArray["dozId"] = getCookie("DozId");
+        jsonArray["dozVorname"] =  object["dozVorname"];
+        jsonArray["dozNachname"] = object["dozNachname"];
+        jsonArray["dozMail"] = object["dozMail"];
+        jsonArray["dozTel"] = object["dozTel"];
+        jsonArray["dozMobil"] = object["dozMobil"];
+        jsonArray["password"] = object["password"];
+        var json = JSON.stringify(jsonArray);
 
-        case 3:
-            alert('Die Nutzer Details wurden erfolgreich geändert');
-        break;
+        fetch("https://vorlesungsplaner.herokuapp.com/dozenten/update/"+ getCookie("DozId"), {
+        method: "PUT",
+        headers: {
+            "content-type": "application/json",
+            "Authorization": "Bearer " + getCookie("token")
+        },
+        "body":json
+        })
+        .then(response => {
+            if(response.ok){
+                document.getElementById("PwModalClose").click();
+            }
+        })
+        .catch(err => {
+        console.log(err);
+        });
+
+
     }
-}
 
-class ChangePwModal  extends React.Component{
+
     render() {
         return(
-            <div className="modal fade bd-example-modal-lg" id="ChangePwModal" tabIndex="-1" role="dialog"
-                 aria-labelledby="exampleModalLabel" aria-hidden="false" onload='getDozByMail({getCookie("user")})'>
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="ChangePwModalModalLabel">Nutzer Details</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+            <div class="modal fade" id="ChangePwModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ChangePwModalModalLabel">Nutzer Details</h5>
+                    <button type="button" id="PwModalClose" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form onSubmit={this.persDaten}>
+                        <div className="input-group" id="inputgroop_changeemail">
+                                <input type="text" className="form-control" id="neuesPw" name="dozMail" value= {getCookie("user")} required></input>
                         </div>
-                        <div className="modal-body">
-                            <form>
-                            <div className="input-group" id="inputgroop_changeemail">
-                                    <input type="email" className="form-control" id="neuesPw"
-                                           placeholder= {getCookie("user")}></input>
-                            </div>
-                           
-                            <div class="form-row" id="changename">
-                                    <div class="col">
-                                    <input type="text" class="form-control" placeholder="Vorname"></input>
-                                    </div>
-                                    <div class="col">
-                                    <input type="text" class="form-control" placeholder="Nachname"></input>
-                                    </div>
-                            </div>
-                            <div class="form-row" id="changetel">
-                                    <div class="col">
-                                    <input type="tel" class="form-control" placeholder="Telefon"></input>
-                                    </div>
-                                    <div class="col">
-                                    <input type="tel" class="form-control" placeholder="Mobil"></input>
-                                    </div>
-                            </div>
-                                <button className="btn btn-danger d-flex justify-content-center" type="button" id="modalbuttonsredpd"
-                                                > Pesönliche Daten Änderm
-                                        </button>
-
-                                <div className="input-group" id="inputgroop_changepw">
-                                    <input type="password" className="form-control" id="neuesPw"
-                                           placeholder="Neues Password"></input>
-                                   
+                        
+                        <div class="form-row" id="changename">
+                                <div class="col">
+                                <input type="text" id="VornameDoz" class="form-control" name="dozVorname" placeholder="Vorname"></input>
                                 </div>
-                                <div className="input-group" id="inputgroop_changepw">
-                                    <input type="password" className="form-control" id="neuesPwBestätigen"
-                                           placeholder="Neues Password Bestätigen"></input>
+                                <div class="col">
+                                <input type="text" id="NachnameDoz" class="form-control" name="dozNachname" placeholder="Nachname"></input>
                                 </div>
-                                <button type="button" className="btn btn-danger d-flex justify-content-center" id="modalbuttonsredpw">Password ändern</button>
+                        </div>
+                        <div class="form-row" id="changetel">
+                                <div class="col">
+                                <input type="tel" id="telDoz" class="form-control" name="dozTel" placeholder="Telefon"></input>
+                                </div>
+                                <div class="col">
+                                <input type="tel" id="mobDoz" class="form-control" name="dozMobil" placeholder="Mobil"></input>
+                                </div>
+                        </div>
+                        <div className="input-group" id="inputgroop_changepw">
+                            <input type="password" className="form-control" id="neuesPw" name="password" placeholder="Neues Password" required />
                             
-                            </form>
                         </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Schließen</button>
-                        </div>
-                    </div>
+                        <button className="btn btn-danger d-flex justify-content-center" type="submit" id="modalbuttonsredpd"> 
+                            Änderungen abschicken
+                        </button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                </div>
                 </div>
             </div>
+        </div>
+
         );
     }
 };

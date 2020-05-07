@@ -299,7 +299,7 @@ class Kurse extends React.Component{
                     checklabel.className = "custom-control-label";
                     checklabel.setAttribute("for", this.state.showKurse[i]["kurId"] +'check');
                     // checklabel.for = this.state.showKurse[i]["kurId"] +'check';
-                    checklabel.onclick = () => this.checkbox(this.state.showKurse[i]["kurId"]);
+                    checklabel.onclick = () => this.checkbox(this.state.showKurse[i]["kurBezeichnung"],this.state.showKurse[i]["kurId"]);
                     checkdiv.appendChild(checkinput);
                     checkElement.appendChild(checkdiv);
                     checkdiv.appendChild(checklabel);
@@ -377,7 +377,7 @@ class Kurse extends React.Component{
 
     showSemester(kursName,kursId){
         //Kurs in Inputfeld eintragen
-        document.getElementById("inputAddKurs").value = kursName;
+
 
         
         // document.getElementById(kursId).style.color = "#E30013";
@@ -450,23 +450,12 @@ class Kurse extends React.Component{
         }
     }
 
-    checkbox(kursId){
-        // function uncheckAll(divid) {
-        //     var checks = document.querySelectorAll('#' + divid + ' input[type="checkbox"]');
-        //     for(var i =0; i< checks.length;i++){
-        //         var check = checks[i];
-        //         if(!check.disabled){
-        //             check.checked = false;this.state.date
-        //         }
-        //     }
-        //     document.getElementById(kursId+"check").disabled= false;
-        // }
-        // uncheckAll("show-main");
+    checkbox(kursName,kursId){
         var ram = document.getElementById("inputAddIdKurs").value;
         if(ram != "" && ram != kursId){
             document.getElementById(ram + "check").checked = false;
         }
-        
+        document.getElementById("inputAddKurs").value = kursName;
         document.getElementById("inputAddIdKurs").value = kursId;
          
     }

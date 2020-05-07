@@ -86,13 +86,6 @@ class HomeUser extends React.Component{
             termin: undefined
         }
     }
-    componentDidMount() {
-        window.addEventListener('load', this.loadTermineToday);
-    }
-
-    componentWillUnmount() { 
-        window.removeEventListener('load', this.loadTermineToday);
-    }
 
     loadTermineToday(){
         var today = new Date();
@@ -110,6 +103,10 @@ class HomeUser extends React.Component{
             this.setState({
                 loadTermineToday: res
             });
+            
+            var kiste = document.createElement("div");
+            kiste.innerHTML = '<cite id="citeVer">Heute sind folgende Veranstaltungen:</cite>';
+            kiste.id="heuteVer";
 
             for (let i=0; i < this.state.loadTermineToday.length; i++){
                 var datum = new Date(this.state.loadTermineToday[i]["terDatum"]);
@@ -129,11 +126,17 @@ class HomeUser extends React.Component{
                                         '<br/>Raum: ' + this.state.loadTermineToday[i]["raumNr"]+ '<br/>' +
                                         this.state.loadTermineToday[i]["vorlesungen"]["vorName"] + '<br/>' + this.state.loadTermineToday[i]["semester"]["kurs"]["kurBezeichnung"];
 
-                    document.getElementById("heuteterminehier").appendChild(termin0);
+                    kiste.appendChild(termin0);
                 }
 
                 
             }
+            if(kiste.hasChildNodes()){
+                document.getElementById("heuteterminehier").removeChild(document.getElementById("heuteVer"));
+                document.getElementById("heuteterminehier").appendChild(kiste);
+
+            }
+
 
             if(this.state.termin == undefined){
                 var rahmen = document.createElement("div");
@@ -156,13 +159,18 @@ class HomeUser extends React.Component{
     render() {
         return(
             <div id="begruessung">
-                 <div className="content" id="begruessung2">
+                 <div className="content" id="begruessung3">
                     <a>
                         <h1 className="display-4">Willkommen {getCookie("user")}!</h1>
                         <hr></hr>
                     </a>
                     <div class="center" id="heuteterminehier">
-                        <div id="heuteVer">Heute sind folgende Veranstaltungen:</div>
+                        <div id="heuteVer" className="center" onClick={this.loadTermineToday}>
+                            <cite>Klicken Sie hier, um sich die heutigen Termine anzeigen zu lassen.</cite><br/>
+                            <svg class="showbest bi bi-chevron-compact-down" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M1.553 6.776a.5.5 0 01.67-.223L8 9.44l5.776-2.888a.5.5 0 11.448.894l-6 3a.5.5 0 01-.448 0l-6-3a.5.5 0 01-.223-.67z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
                         
                     </div>
                             
