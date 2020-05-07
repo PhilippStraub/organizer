@@ -637,7 +637,7 @@ class Termine extends React.Component{
         .then(response => {
             if(response.ok){
                 document.getElementById("viewModalCenterClose").click();
-                document.getElementById("search").click();
+                window.location.reload();
             }
         })
         .catch(err => {
