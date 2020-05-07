@@ -25,7 +25,7 @@ class Home extends React.Component{
     //that way we're able to include them here in our home view but also seperate them.
     render() {
         return(
-            <div><br></br><br></br>
+            <div>
                 <div className="rahmenlogohome"></div>
                 <div class="card">
   <div class="card-body">
