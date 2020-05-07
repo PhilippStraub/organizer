@@ -25,14 +25,22 @@
     display: inline-block;
     background: url('./data/logo.jpg');
     background-size: cover;
+    margin-bottom: 40px;
+    margin-top: 40px;
     
 }
 
+.card{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .youtubevideo{
-    width:420px;
-    height:315px;
-    float: right;
-    margin-right: 15px;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 900px;
+    min-height: 360px;
+    
 }
 
 #begruessung2{

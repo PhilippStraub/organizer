@@ -27,7 +27,26 @@ class Home extends React.Component{
         return(
             <div><br></br><br></br>
                 <div className="rahmenlogohome"></div>
-              <div id="begruessung">
+                <div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Herzlich Willkommen {getCookie("user")}!</h5>
+    
+    <p class="card-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                        </p>
+    
+  </div>
+</div>
+<br></br>
+<div class="card">
+  <div class="card-body">
+    
+    
+  <iframe className="youtubevideo"src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+    
+  </div>
+</div>
+
+              {/* <div id="begruessung">
                  <div className="content" id="begruessung2">
                      <br></br>
                     <a>
@@ -53,7 +72,7 @@ class Home extends React.Component{
                             
                 </div>
                 
-            </div> 
+            </div>  */}
             </div>
 
         );
