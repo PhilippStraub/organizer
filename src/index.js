@@ -356,7 +356,7 @@ class Index extends React.Component{
         }
     }
     isAdmin(){
-        if(getCookie("user") == "Admin" || getCookie("user") == "bimazubute@dhbw-stuttgart.de"){
+        if(getCookie("user") == "Admin" || getCookie("user") == "jany@dhbw-stuttgart.de"){
             return true;
         } else{
             return false;
